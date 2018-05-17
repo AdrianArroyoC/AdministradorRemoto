@@ -1,5 +1,7 @@
 package principal;
 
+import java.awt.Robot;
+import java.net.Socket;
 import java.util.ArrayList;
 
 /*
@@ -14,7 +16,31 @@ import java.util.ArrayList;
  */
 public class ManejadorConexiones {
     private
-        ArrayList<ReceptorComandos>
-            Clientes;
+        ArrayList<Conexion>
+            Conexiones;
     
+    private
+        int
+            puerto = 4907;
+
+    public ManejadorConexiones() {
+        Conexion
+            NuevaConexion;
+        
+        this.Conexiones = new ArrayList<Conexion>();
+        
+        while(true){
+            NuevaConexion = new Conexion(puerto);
+            
+            /* Nuevo cliente se ha conectado. Continuar */
+            this.Conexiones.add(NuevaConexion);
+        }
+    }
+    
+    /*
+        Método para recuperar una conexión
+    */
+    public Conexion getConexion(int indice){
+        return this.Conexiones.get(indice);
+    }
 }
