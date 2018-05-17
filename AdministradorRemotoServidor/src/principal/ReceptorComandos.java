@@ -3,7 +3,6 @@ package principal;
 import java.awt.Robot;
 import java.net.Socket;
 import java.util.Scanner;
-import static java.lang.Thread.sleep;
 
 /**
  *
