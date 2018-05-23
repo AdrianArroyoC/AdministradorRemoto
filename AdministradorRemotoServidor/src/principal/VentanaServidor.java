@@ -39,9 +39,10 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
     private JButton BtnDerecha = new JButton(ImgDerecha);
     private JButton BtnAbajo = new JButton(ImgAbajo);
     private JButton BtnIzquierda = new JButton(ImgIzquierda);
+    //private JPanel PnlContenedor = new JPanel();
     private JPanel PnlConexiones = new JPanel();
     //private JScrollPane ScrllConexiones = new JScrollPane(PnlConexiones);
-    private int Conexiones = 0;
+    private int Conexiones = 11;
     private ButtonGroup AgrupacionConexiones = new ButtonGroup();
     private JToggleButton[] ArregloConexiones;
     
@@ -57,13 +58,14 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
         this.setUndecorated(true);
         this.establecerUbicacion(0);
         this.PnlConexiones.setLayout(null);
-        //this.PnlConexiones.setAutoscrolls(true);
+        this.PnlConexiones.setAutoscrolls(true);
         AWTUtilities.setWindowOpaque(this, false);
         this.PnlFlechas.setOpaque(false);
         this.PnlConexiones.setOpaque(false);
         this.add(this.BtnCerrar);
         this.add(this.BtnOcultar);
         this.add(this.PnlFlechas);
+        //this.add(this.PnlContenedor);
         this.add(this.PnlConexiones);
         //this.add(this.ScrllConexiones);
         this.PnlFlechas.setLayout(null);
@@ -118,6 +120,7 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
         
         if (this.Horizontal) {
             this.setSize(800, 100);
+            //this.PnlContenedor.setPreferredSize(new Dimension(800, 100));
             this.BtnCerrar.setBounds(21, 11, 33, 33);
             this.BtnOcultar.setBounds(21, 56, 33, 33);
             this.PnlFlechas.setBounds(65, 0, 100, 100);
@@ -127,6 +130,7 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
         }
         else {
             this.setSize(100, 800);
+            //this.PnlContenedor.setPreferredSize(new Dimension(100, 800));
             this.BtnCerrar.setBounds(11, 21, 33, 33);
             this.BtnOcultar.setBounds(56, 21, 33, 33);
             this.PnlFlechas.setBounds(0, 65, 100, 100);
