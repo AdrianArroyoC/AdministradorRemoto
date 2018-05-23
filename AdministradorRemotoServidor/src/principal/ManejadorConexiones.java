@@ -18,15 +18,22 @@ public class ManejadorConexiones implements Runnable{
     private
         Thread
             Hilo;
+    
+    private
+        VentanaServidor
+            Ventana;
 
-    public ManejadorConexiones() {
+    public ManejadorConexiones(VentanaServidor Ventana) {
+        /* Para permitir control de ventanas */
+        this.Ventana = Ventana;
+        
         /* Crear el hilo */
         this.Hilo = new Thread(this);
         
         /* Iniciar proceso para evitar que la ventana se trabe*/
         this.Hilo.start();
     }
-    
+
     /*
         Método para recuperar una conexión
     */
@@ -55,6 +62,9 @@ public class ManejadorConexiones implements Runnable{
             
             /* Nuevo cliente se ha conectado. Añadir a la lista */
             this.Conexiones.add(NuevaConexion);
+            
+            /* Llamar a la ventana para actualizar interfaz */
+            this.Ventana.agregarQuitarBotones();
         }
     }
 }
