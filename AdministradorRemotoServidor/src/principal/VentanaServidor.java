@@ -136,9 +136,9 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
     
     public void agregarQuitarBotones() {       
         try {
-            //Conexion[] conexiones = CarteraClientes.getConexiones();
+            Conexion[] conexiones = CarteraClientes.getConexiones();
             PnlConexiones.removeAll();
-            Conexion[] conexiones = new Conexion[22];
+            //Conexion[] conexiones = new Conexion[22];
             if (conexiones.length != 0) {
                 this.ArregloConexiones = new JToggleButton[conexiones.length];
                 int x = 5;
@@ -147,10 +147,10 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
                     y = 0; //16 
                 }
                 for (int i = 0; i < conexiones.length; i++) {
-                    //this.ArregloConexiones[i] = new JToggleButton(conexiones[i].getNombres());
+                    this.ArregloConexiones[i] = new JToggleButton(conexiones[i].getNombres());
                     this.ArregloConexiones[i] = new JToggleButton(""+i);
                     this.AgrupacionConexiones.add(this.ArregloConexiones[i]);
-                    //this.ArregloConexiones[i].setToolTipText(conexiones[i].getNombre());
+                    this.ArregloConexiones[i].setToolTipText(conexiones[i].getNombre());
                     if (i == 6 && this.Horizontal) {
                             y = 35; //46
                             x = 5;
