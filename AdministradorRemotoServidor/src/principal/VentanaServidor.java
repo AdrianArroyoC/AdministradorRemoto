@@ -80,6 +80,7 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
         this.BtnIzquierda.setBounds(0, 33, 33, 33);
         this.addKeyListener(this);
         this.setVisible(true);
+        this.setAlwaysOnTop(true);
         this.agregarQuitarBotones();
     }
     
