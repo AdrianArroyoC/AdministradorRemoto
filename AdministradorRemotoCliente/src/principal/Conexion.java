@@ -19,7 +19,7 @@ public class Conexion {
             Zocalo;
     
     private
-        CapturadorComandos
+        EnviadorComandos
             EspacioPantalla;
             
     public Conexion(String DireccionIPServidor, int puerto, String DireccionIPCliente, String Nombre, String Apellidos, String Codigo){
@@ -47,7 +47,7 @@ public class Conexion {
             FlujoSalida.close();
             
             /*Crear un nuevo capturador de comandos que trabaje las peticiones */
-            this.EspacioPantalla = new CapturadorComandos(this.Zocalo);
+            this.EspacioPantalla = new EnviadorComandos(this.Zocalo);
         } catch (Exception e){
             System.out.println("Hubo un error al establecer la conexión: " + e.getMessage());
         }
