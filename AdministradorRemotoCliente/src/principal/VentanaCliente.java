@@ -45,10 +45,10 @@ public class VentanaCliente extends JFrame {
         JTextField TextoIpServidor = new JTextField(15);
         LabelPuerto = new JLabel();
         LabelPuerto.setText("Puerto del servidor: ");
-        JTextField  TextoPuerto = new JTextField("9090", 12);
-        LabelStatus=new JLabel();
+        JTextField TextoPuerto = new JTextField("9090", 12);
+        LabelStatus = new JLabel();
         LabelStatus.setText("Estado: Pendiente del servidor");
-        
+
         LabelStatus.setHorizontalAlignment(JTextField.CENTER);
 
         //TextStatus.setText("Pendiente del servidor");
@@ -73,8 +73,8 @@ public class VentanaCliente extends JFrame {
                     ActionEvent e) {
 
                 try {
-                         JOptionPane.showMessageDialog(null,"no llenaste los datos correctamente!");
-                         setState(JFrame.ICONIFIED);
+                    JOptionPane.showMessageDialog(null, "no llenaste los datos correctamente!");
+
                 } catch (InputMismatchException ex) {
                     JOptionPane.showMessageDialog(null, ex.toString(), "Error al conectarse al server",
                             JOptionPane.ERROR_MESSAGE);
@@ -88,6 +88,13 @@ public class VentanaCliente extends JFrame {
         setSize(300, 200);
         setLocationRelativeTo(null);
         setVisible(true);
+        this.setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+    }
+
+    public void mostrarVentana(boolean mostrar) {
+
+        this.setVisible(mostrar);
+        
     }
 }
