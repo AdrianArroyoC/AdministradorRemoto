@@ -1,9 +1,10 @@
 package principal;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.Socket;
-import javax.swing.JFrame;
 
 /**
  *
@@ -25,13 +26,21 @@ public class Conexion {
     private
         VentanaCliente
             Ventana;
-            
+    
+    private
+        int
+            servidorAncho,
+            servidorAlto;
+                
     public Conexion(String DireccionIPServidor, int puerto, String Nombre, String Apellidos, String Codigo, VentanaCliente Ventana){
         DataOutputStream
             FlujoSalida;
+    
+        DataInputStream
+            FlujoEntrada;
         
-        JFrame
-            Pantalla;
+        String
+            Respuesta;
         
         try{
             /* Establecer el socket */
@@ -41,17 +50,14 @@ public class Conexion {
             this.Ventana = Ventana;
             
             System.out.println("Conectado con el servidor...");
-
-            /* Establecer la pantalla de captura */
-            Pantalla = new JFrame();
-            Pantalla.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-            Pantalla.setUndecorated(true);
-            Pantalla.setVisible(true);
-            Pantalla.setAlwaysOnTop(true);
             
             /* Establecer el flujo de salida de datos hacia el servidor */
             FlujoSalida = new DataOutputStream(
                 this.Zocalo.getOutputStream()
+            );
+            
+            FlujoEntrada = new DataInputStream(
+                this.Zocalo.getInputStream()
             );
             
             /* Enviar información del cliente */
@@ -62,15 +68,41 @@ public class Conexion {
             FlujoSalida.writeUTF(Codigo);
             FlujoSalida.writeUTF(Nombre);
             FlujoSalida.writeUTF(Apellidos);
-            
-            /* Datos enviados. Cerrar el flujo */
-            FlujoSalida.close();
-            
-            /*Crear un nuevo capturador de comandos que trabaje las peticiones */
-            this.EspacioPantalla = new EnviadorComandos(this.Zocalo, this.Ventana);
-            this.RespuestaServidor = new ReceptorDatos(this.Zocalo, this.Ventana);
+
+            /* Recibir información del servidor */
+            if((Respuesta = FlujoEntrada.readLine()) != null){
+                /* La primera respuesta es el ancho */
+                this.servidorAncho = Integer.valueOf(Respuesta);
+                
+                /* Volver a solicitar */
+                Respuesta = FlujoEntrada.readLine();
+
+                /* La segunda respuesta es el alto */
+                this.servidorAlto = Integer.valueOf(Respuesta);
+                
+                /* Crear un nuevo capturador de comandos que trabaje las peticiones */
+                this.EspacioPantalla = new EnviadorComandos(
+                    FlujoEntrada,
+                    FlujoSalida,
+                    this.Ventana,
+                    this.servidorAncho,
+                    this.servidorAlto
+                );
+                this.RespuestaServidor = new ReceptorDatos(
+                    FlujoEntrada,
+                    FlujoSalida,
+                    this.Ventana
+                );
+            }else{
+                /* Respuesta no válida. Cerrar flujos */
+                FlujoEntrada.close();
+                FlujoSalida.close();
+                
+                /* Mostrar ventana de cliente */
+                this.Ventana.mostrarVentana(true);
+            }
         } catch (Exception e){
-            System.out.println("Hubo un error al establecer la conexión: " + e.getMessage());
+            System.out.println(this.getClass() + ": Hubo un error al establecer la conexión: " + e.getMessage());
         }
     }
 }

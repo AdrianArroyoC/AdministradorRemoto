@@ -1,24 +1,20 @@
 package principal;
 
-import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.io.PrintWriter;
-import java.net.Socket;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import javax.swing.JFrame;
 
 /**
  *
  * @author Carlos González <carlos85g at gmail.com>
  */
-public class EnviadorComandos implements Runnable, KeyListener, MouseMotionListener, MouseListener{    
-    private
-        Socket
-            Zocalo;
-    
+public class EnviadorComandos implements Runnable, KeyListener, MouseMotionListener, MouseListener{       
     private
         JFrame
             Capturista;
@@ -28,25 +24,46 @@ public class EnviadorComandos implements Runnable, KeyListener, MouseMotionListe
             Ventana;
     
     private
-        PrintWriter
+        DataOutputStream
             FlujoSalida;
+    
+    private
+        DataInputStream
+            FlujoEntrada;
     
     private
         Thread
             Hilo;
+    
+    private
+        boolean
+            vivo;
+    
+    private
+        int
+            servidorAncho,
+            servidorAlto;
         
-    public EnviadorComandos(Socket Zocalo, VentanaCliente Pantalla) {
-
-        /* Establecer el socket */
-        this.Zocalo = Zocalo;
+    public EnviadorComandos(DataInputStream FlujoEntrada, DataOutputStream FlujoSalida, VentanaCliente Pantalla, int ancho, int alto) {
+        /* Establecer los flujos de entrada y salida desde la conexión */
+        this.FlujoEntrada = FlujoEntrada;
+        this.FlujoSalida = FlujoSalida;
+        
+        /* Establecer el tamaño de pantalla del servidor */
+        this.servidorAncho = ancho;
+        this.servidorAlto = alto;
         
         /* Establecer la ventana para control bidireccional */
         this.Ventana = Ventana;
                 
         /* Asignar capturista */
         this.Capturista = new JFrame();
+        
+        this.Capturista.setSize(800, 600);
+        /*
         this.Capturista.setExtendedState(JFrame.MAXIMIZED_BOTH); 
         this.Capturista.setUndecorated(true);
+        */
         this.Capturista.setVisible(true);
         this.Capturista.setAlwaysOnTop(true);
 
@@ -57,6 +74,9 @@ public class EnviadorComandos implements Runnable, KeyListener, MouseMotionListe
         this.Capturista.addKeyListener(this);
         this.Capturista.addMouseListener(this);
         this.Capturista.addMouseMotionListener(this);
+
+        /* Iniciar función */
+        this.vivo = true;
         
         /* Crear hilo */
         this.Hilo = new Thread(this);
@@ -65,22 +85,50 @@ public class EnviadorComandos implements Runnable, KeyListener, MouseMotionListe
         this.Hilo.start();
     }
 
+    /*
+        Método privado para convertir las coordenadas del capturador a coordenadas del servidor en la pantalla
+    */
+    private int[] convertirACoordenadasServidor(int x, int y){
+        int
+            nuevoX = (this.servidorAncho / this.Capturista.getWidth()) * x,
+            nuevoY = (this.servidorAlto / this.Capturista.getHeight()) * y;
+        
+        return new int[]{
+            nuevoX,
+            nuevoY
+        };
+    }
+    
     @Override
     public void keyTyped(KeyEvent e) {
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-        this.FlujoSalida.println(Comandos.KEY_PRESS);
-        this.FlujoSalida.println(e.getKeyCode());
-        this.FlujoSalida.flush();
+        try {
+            this.FlujoSalida.write(Comandos.KEY_PRESS);       
+            this.FlujoSalida.write(e.getKeyCode());
+            this.FlujoSalida.flush();
+        } catch (IOException ioe){
+            System.out.println("Error en comunicación: Terminando ejecución");
+            this.vivo = false;
+        } catch (Exception ex) {
+            System.out.println("No fue posible enviar el evento de presión de tecla: " + ex.getMessage());
+        }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        this.FlujoSalida.println(Comandos.KEY_RELEASE);
-        this.FlujoSalida.println(e.getKeyCode());
-        this.FlujoSalida.flush(); 
+        try {
+            this.FlujoSalida.write(Comandos.KEY_RELEASE);       
+            this.FlujoSalida.write(e.getKeyCode());
+            this.FlujoSalida.flush();
+        } catch (IOException ioe){
+            System.out.println("Error en comunicación: Terminando ejecución");
+            this.vivo = false;
+        } catch (Exception ex) {
+            System.out.println("No fue posible enviar el evento de liberación de tecla: " + ex.getMessage());
+        }
     }
 
     @Override
@@ -89,10 +137,23 @@ public class EnviadorComandos implements Runnable, KeyListener, MouseMotionListe
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        this.FlujoSalida.println(Comandos.MOUSE_MOVE);
-        this.FlujoSalida.println(e.getX());
-        this.FlujoSalida.println(e.getY());
-        this.FlujoSalida.flush();
+        int[]
+            nuevasCoordenadas = convertirACoordenadasServidor(
+                e.getX(),
+                e.getY()
+            );
+
+        try {
+            this.FlujoSalida.write(Comandos.MOUSE_MOVE);       
+            this.FlujoSalida.write(nuevasCoordenadas[0]);
+            this.FlujoSalida.write(nuevasCoordenadas[1]);
+            this.FlujoSalida.flush();
+        } catch (IOException ioe){
+            System.out.println("Error en comunicación: Terminando ejecución");
+            this.vivo = false;
+        } catch (Exception ex) {
+            System.out.println("No fue posible enviar el evento de movimiento de mouse: " + ex.getMessage());
+        }
     }
 
     @Override
@@ -105,9 +166,16 @@ public class EnviadorComandos implements Runnable, KeyListener, MouseMotionListe
             boton = e.getButton(),
             xBoton = (boton == 3)? 4 : 16;
         
-        this.FlujoSalida.println(Comandos.MOUSE_PRESS);       
-        this.FlujoSalida.println(xBoton);
-        this.FlujoSalida.flush();
+        try {
+            this.FlujoSalida.write(Comandos.MOUSE_PRESS);       
+            this.FlujoSalida.write(xBoton);
+            this.FlujoSalida.flush();
+        } catch (IOException ioe){
+            System.out.println("Error en comunicación: Terminando ejecución");
+            this.vivo = false;
+        } catch (Exception ex) {
+            System.out.println("No fue posible enviar el evento de presión de botón de mouse: " + ex.getMessage());
+        }
     }
 
     @Override
@@ -116,9 +184,16 @@ public class EnviadorComandos implements Runnable, KeyListener, MouseMotionListe
             boton = e.getButton(),
             xBoton = (boton == 3)? 4 : 16;
 
-        this.FlujoSalida.println(Comandos.MOUSE_RELEASE);       
-        this.FlujoSalida.println(xBoton);
-        this.FlujoSalida.flush();
+        try {
+            this.FlujoSalida.write(Comandos.MOUSE_RELEASE);       
+            this.FlujoSalida.write(xBoton);
+            this.FlujoSalida.flush();
+        } catch (IOException ioe){
+            System.out.println("Error en comunicación: Terminando ejecución");
+            this.vivo = false;
+        } catch (Exception ex) {
+            System.out.println("No fue posible enviar el evento de liberación de botón de mouse: " + ex.getMessage());
+        }
     }
 
     @Override
@@ -132,23 +207,20 @@ public class EnviadorComandos implements Runnable, KeyListener, MouseMotionListe
     @Override
     public void run() {
         /* Iniciar flujo de salida */
-        try{
-            this.FlujoSalida = new PrintWriter(
-                this.Zocalo.getOutputStream()
-            );
-            
-            while(!this.FlujoSalida.checkError()){
+        try{            
+            while(this.vivo){
                 continue;
             }
             
-            /* Cerrar flujo */
+            /* Cerrar flujos */
+            this.FlujoEntrada.close();
             this.FlujoSalida.close();
             
             /* Mostrar ventana */
             this.Ventana.mostrarVentana(true);
             
         } catch(Exception e) {
-            System.out.println("No fue posible iniciar el flujo de salida: " + e.getMessage());
+            System.out.println(this.getClass() + ": No fue posible cerrar el flujo de salida: " + e.getMessage());
         }
     }
 }

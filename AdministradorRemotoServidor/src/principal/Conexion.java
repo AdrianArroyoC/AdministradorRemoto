@@ -22,11 +22,20 @@ public class Conexion {
             Cliente;
     
     private
-        String
-            Nombres = "Nombre",
-            Apellidos = "Apellido",
-            Codigo = "01234567890",
-            DireccionIP = "127.0.0.1";
+        EnviadorDatos
+            Enviador;
+    
+    private
+        DataInputStream
+            FlujoEntrada;
+    
+    private
+        DataOutputStream
+            FlujoSalida;
+    
+    private
+        boolean
+            vivo;
 
     public Conexion(int puerto){
         Socket
@@ -37,10 +46,7 @@ public class Conexion {
 
         GraphicsDevice
             DispositivoGraficos;
-        
-        DataInputStream
-            FlujoEntrada;
-        
+
         try{
             System.out.println("Esperando conexión del cliente...");
             
@@ -59,60 +65,83 @@ public class Conexion {
             /* Cliente se ha conectado. */
             System.out.println("Cliente conectado...");
             
-            /* Crear el flujo de salida */
-            FlujoEntrada = new DataInputStream(
+            /* Crear el flujo de entrada */
+            this.FlujoEntrada = new DataInputStream(
                 Zocalo.getInputStream()
             );
-
-            /* Obtener los datos */
-            this.DireccionIP = FlujoEntrada.readUTF();
-            this.Codigo = FlujoEntrada.readUTF();
-            this.Nombres = FlujoEntrada.readUTF();
-            this.Apellidos = FlujoEntrada.readUTF();            
-
-            /* Datos obtenidos. Cerrar el flujo */
-            FlujoEntrada.close();
+            
+            /* Crear el flujo de salida */
+            this.FlujoSalida = new DataOutputStream(
+                Zocalo.getOutputStream()
+            );
 
             /* Crear el nuevo receptor de comandos */
-            this.Cliente = new ReceptorComandos(Zocalo, Automata);
+            this.Cliente = new ReceptorComandos(
+                this.FlujoEntrada,
+                this.FlujoSalida,
+                Automata
+            );
+            
+            /* Crear el nuevo enviador de datos */
+            this.Enviador = new EnviadorDatos(
+                this.FlujoEntrada,
+                this.FlujoSalida
+            );
         }catch (Exception e){
+            /* Error. Conexión muerta */
+            this.vivo = false;
+
+            /* Informar en consola */
             System.out.println("Hubo un error en la creación de conexión: " + e.getMessage());
         }
     }
     
     /*
-        Método provisional para recuperar el nombre del cliente
+        Verificar que conexión está viva
+    */
+    public boolean isVivo(){
+        /* Si los enviadores están vivos, esta conexión está viva */
+        if(!this.Cliente.isVivo() || !this.Enviador.isVivo()){
+            this.vivo = false;
+        }
+        
+        /* Retornar */
+        return this.vivo;
+    }
+    
+    /*
+        Método para recuperar el nombre del cliente
     */
     public String getNombre(){
-        return (this.Nombres + " " + this.Apellidos);
+        return this.Cliente.getNombre();
     }
     
     /*
-        Método provisional para recuperar los nombres inciales
+        Método para recuperar los nombres inciales
     */
     public String getNombres(){
-        return this.Nombres;
+        return this.Cliente.getNombres();
     }
     
     /*
-        Método provisional para recuperar los apellidos
+        Método para recuperar los apellidos
     */
     public String getApellidos(){
-        return this.Apellidos;
+        return this.Cliente.getApellidos();
     }
     
     /*
-        Método provisional para recuperar el código
+        Método para recuperar el código
     */
     public String getCodigo(){
-        return this.Codigo;
+        return this.Cliente.getCodigo();
     }
     
     /*
-        Método provisional para recuperar la IP
+        Método para recuperar la IP
     */
     public String getDireccionIP(){
-        return this.DireccionIP;
+        return this.Cliente.getDireccionIP();
     }
     
     /*

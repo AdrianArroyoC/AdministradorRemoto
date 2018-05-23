@@ -1,6 +1,8 @@
 package principal;
 
 import java.awt.Robot;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
@@ -15,26 +17,79 @@ public class ReceptorComandos implements Runnable{
             Hilo;
     
     private
-        Socket
-            Zocalo;
-    
-    private
         Robot
             Automata;
+    
+    private    
+        DataInputStream
+            FlujoEntrada;
+    
+    private    
+        DataOutputStream
+            FlujoSalida;
+    
+    private
+        String
+            Nombres,
+            Apellidos,
+            Codigo,
+            DireccionIP;
     
     private
         boolean
             continuar, /* Bandera para especificar si es necesario detener control */
             vivo; /* Bandera para mantener el hilo vivo. Ponerlo en falso acabará con la sesión del usuario */
 
-    public ReceptorComandos(Socket Zocalo, Robot Automata) {
-        this.Zocalo = Zocalo;
+    public ReceptorComandos(DataInputStream FlujoEntrada, DataOutputStream FlujoSalida, Robot Automata) {
+        /* Establecer los flujos de entrada y salida desde la conexión */
+        this.FlujoEntrada = FlujoEntrada;
+        this.FlujoSalida = FlujoSalida;
+        
+        /* Obtener el robot para uso */
         this.Automata = Automata;
-        this.Hilo = new Thread(this);
+        
+        /* Iniciar variables de flujo */
         this.continuar = true;
         this.vivo = true;
         
+        /* Iniciar hilo */
+        this.Hilo = new Thread(this);
         this.Hilo.start();
+    }
+    
+    /*
+        Método para recuperar el nombre del cliente
+    */
+    public String getNombre(){
+        return (this.Nombres + " " + this.Apellidos);
+    }
+    
+    /*
+        Método para recuperar los nombres inciales
+    */
+    public String getNombres(){
+        return this.Nombres;
+    }
+    
+    /*
+        Método para recuperar los apellidos
+    */
+    public String getApellidos(){
+        return this.Apellidos;
+    }
+    
+    /*
+        Método para recuperar el código
+    */
+    public String getCodigo(){
+        return this.Codigo;
+    }
+    
+    /*
+        Método para recuperar la IP
+    */
+    public String getDireccionIP(){
+        return this.DireccionIP;
     }
     
     /*
@@ -51,70 +106,67 @@ public class ReceptorComandos implements Runnable{
         this.vivo = false;
     }
     
+    /*
+        Método para verificar que la clase sigue viva
+    */
+    public boolean isVivo(){
+        return this.vivo;
+    }
+    
     @Override
     public void run() {
-        Scanner
-            FlujoEntrada;
-
-        PrintWriter
-            FlujoSalida;
-        
         int
             comando;
 
         try {
-            /* Establecer el flujo de entrada */
-            FlujoEntrada = new Scanner(
-                this.Zocalo.getInputStream()
-            );
-            
-            /* Establecer el flujo de salida */
-            FlujoSalida = new PrintWriter(
-                this.Zocalo.getOutputStream()
-            );
+            /* Obtener los datos primero */
+            this.DireccionIP = FlujoEntrada.readUTF();
+            this.Codigo = FlujoEntrada.readUTF();
+            this.Nombres = FlujoEntrada.readUTF();
+            this.Apellidos = FlujoEntrada.readUTF();  
 
             /* Hasta que la conexión sea detenida */
             while(this.vivo){
                 /* Si está especificado que el usuario está bloqueado, esperar */
                 if(this.continuar){
-                    comando = FlujoEntrada.nextInt();
+                    comando = this.FlujoEntrada.readInt();
 
                     /* Ejecutar comando de acuerdo a identificación */
                     switch(comando){
                         case Comandos.MOUSE_PRESS:
-                            this.Automata.mousePress(FlujoEntrada.nextInt());
+                            this.Automata.mousePress(FlujoEntrada.readInt());
                             break;
                         case Comandos.MOUSE_RELEASE:
-                            this.Automata.mouseRelease(FlujoEntrada.nextInt());
+                            this.Automata.mouseRelease(FlujoEntrada.readInt());
                             break;
                         case Comandos.KEY_PRESS:
-                            this.Automata.keyPress(FlujoEntrada.nextInt());
+                            this.Automata.keyPress(FlujoEntrada.readInt());
                             break;
                         case Comandos.KEY_RELEASE:
-                            this.Automata.keyRelease(FlujoEntrada.nextInt());
+                            this.Automata.keyRelease(FlujoEntrada.readInt());
                             break;
                         default:
                             this.Automata.mouseMove(
-                                FlujoEntrada.nextInt(),
-                                FlujoEntrada.nextInt()
+                                FlujoEntrada.readInt(),
+                                FlujoEntrada.readInt()
                             );
                             break;
                     }
-                }else{
-                    /* Mandar información al flujo de salida */
-                    FlujoSalida.println("-1");
-                    FlujoSalida.flush();
                 }
             }
-            
+
+            /* Mandar información al flujo de salida sobre la desconexión del usuario */
+            FlujoSalida.write(-1);
+            FlujoSalida.flush();
+
             /* Cliente ya no puede volver a ejecutar. Matar los flujos de entrada y salida */
             FlujoEntrada.close();
             FlujoSalida.close();
-            
-            /* Cerrar puerto de servidor */
-            this.Zocalo.close();
         }catch(Exception e){
             System.out.println("Error al procesar comando recibido: " + e.getMessage());
         }
+        
+        /* Cerrar hilo */
+        this.vivo = false;
     }
 }

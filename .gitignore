@@ -22,3 +22,5 @@
 hs_err_pid*
 /AdministradorRemotoServidor/build/
 /AdministradorRemotoCliente/build/
+/AdministradorRemotoServidor/dist/
+/AdministradorRemotoCliente/dist/

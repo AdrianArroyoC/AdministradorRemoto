@@ -6,6 +6,8 @@
 package principal;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
@@ -19,20 +21,21 @@ public class ReceptorDatos implements Runnable{
             Hilo;
 
     private
-        Socket
-            Zocalo;
-    
-    private
         VentanaCliente
             Ventana;
     
     private
-        BufferedReader
+        DataOutputStream
+            FlujoSalida;
+    
+    private
+        DataInputStream
             FlujoEntrada;
     
-    public ReceptorDatos(Socket Zocalo, VentanaCliente Ventana) {
-        /* Asignar socket */
-        this.Zocalo = Zocalo;
+    public ReceptorDatos(DataInputStream FlujoEntrada, DataOutputStream FlujoSalida, VentanaCliente Ventana) {
+        /* Establecer los flujos de entrada y salida desde la conexión */
+        this.FlujoEntrada = FlujoEntrada;
+        this.FlujoSalida = FlujoSalida;
         
         /* Asignar ventana para control bidireccional */
         this.Ventana = Ventana;
@@ -50,28 +53,20 @@ public class ReceptorDatos implements Runnable{
             Respuesta;
         
         try{
-            this.FlujoEntrada = new BufferedReader(
-                new InputStreamReader(
-                    this.Zocalo.getInputStream()
-                )
-            );
-            
             while((Respuesta = this.FlujoEntrada.readLine()) != null){
-                if(Respuesta == "-1"){
+                if(Respuesta.equals("-1")){
                     break;
-                }else{
-                    continue;
                 }
             }
             
-            /* Servidor cerró conexión */
+            /* Servidor cerró conexión. Cerrar flujos */
             this.FlujoEntrada.close();
+            this.FlujoSalida.close();
             
             /* Mostrar la ventana */
             this.Ventana.mostrarVentana(true);
-            
         } catch(Exception e) {
-            System.out.println("No fue posible iniciar el flujo de salida: " + e.getMessage());
+            System.out.println(this.getClass() + ": No fue posible continuar: " + e.getMessage());
         }
     }    
 }
