@@ -30,7 +30,7 @@ public class VentanaCliente extends JFrame {
     JLabel LabelStatus;
     JLabel LabelEspaciador;
 
-    public void start() {
+    public VentanaCliente() {
         LabelNombre = new JLabel();
         LabelNombre.setText("Nombre:           ");
         JTextField TextoNombre = new JTextField(15);
@@ -86,9 +86,5 @@ public class VentanaCliente extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-    }
-
-    public static void main(String args[]) {
-        new VentanaCliente().start();
     }
 }

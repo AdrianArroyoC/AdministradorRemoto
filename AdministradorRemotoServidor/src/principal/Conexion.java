@@ -41,8 +41,6 @@ public class Conexion {
             /* Crear socket del servidor */
             this.ZocaloServidor = new ServerSocket(puerto);
             
-            System.out.println("Cliente conectado...");
-            
             /* Obtener el dispositivo de gráficos a controlar */
             DispositivoGraficos = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 
@@ -52,12 +50,21 @@ public class Conexion {
             /*while(true){*/
             Zocalo = this.ZocaloServidor.accept();
 
+            System.out.println("Cliente conectado...");
+
             /* Crear el nuevo receptor de comandos */
             this.Cliente = new ReceptorComandos(Zocalo, Automata);
             /*}*/
-        }catch (Exception ex){
-            ex.printStackTrace();
+        }catch (Exception e){
+            System.out.println("Hubo un error en la creación de conexión: " + e.getMessage());
         }
+    }
+    
+    /*
+        Método provisional para recuperar el nombre del cliente
+    */
+    public String getNombre(){
+        return "Nombre de Prueba";
     }
     
     /*

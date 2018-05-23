@@ -18,7 +18,7 @@ import javax.swing.JToggleButton;
 
 /**
  *
- * @author Carlos González <adrianarroyoceja at gmail.com>
+ * @author Adrián Arroyo <adrianarroyoceja at gmail.com>
  */
 
 public class VentanaServidor extends JFrame implements MouseListener, KeyListener {
@@ -45,6 +45,9 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
     private int Conexiones = 11;
     private ButtonGroup AgrupacionConexiones = new ButtonGroup();
     private JToggleButton[] ArregloConexiones;
+    
+    /* Manejador de conexiones */
+    private ManejadorConexiones CarteraClientes;
     
     public VentanaServidor(){
         this.setResizable(false);
@@ -144,7 +147,7 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
         this.PnlFlechas.setVisible(mostrar);
     }
     
-    private void agregarQuitarBotones() {
+    private void agregarQuitarBotones() {       
         this.ArregloConexiones = new JToggleButton[Conexiones];
         int x = 5;
         int y = 5;
@@ -154,7 +157,7 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
         for (int i = 0; i < this.Conexiones; i++) {
             this.ArregloConexiones[i] = new JToggleButton(""+i);
             this.AgrupacionConexiones.add(this.ArregloConexiones[i]);
-            this.ArregloConexiones[i].setToolTipText("Mas información");
+            this.ArregloConexiones[i].setToolTipText("Más información");
             this.ArregloConexiones[i].addMouseListener(this);
             if (i == 6) {
                 if (this.Horizontal) {
