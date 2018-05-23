@@ -13,7 +13,7 @@ public class ManejadorConexiones implements Runnable{
     
     private
         int
-            puerto = 4907;
+            puerto = 9090;
     
     private
         Thread
@@ -26,6 +26,9 @@ public class ManejadorConexiones implements Runnable{
     public ManejadorConexiones(VentanaServidor Ventana) {
         /* Para permitir control de ventanas */
         this.Ventana = Ventana;
+        
+        /* Inicializar el contenedor de conexiones */        
+        this.Conexiones = new ArrayList<Conexion>();
         
         /* Crear el hilo */
         this.Hilo = new Thread(this);
@@ -54,9 +57,7 @@ public class ManejadorConexiones implements Runnable{
     public void run() {
         Conexion
             NuevaConexion;
-        
-        this.Conexiones = new ArrayList<Conexion>();
-        
+
         while(true){
             NuevaConexion = new Conexion(puerto);
             
