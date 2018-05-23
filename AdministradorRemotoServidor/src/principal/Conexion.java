@@ -24,6 +24,11 @@ public class Conexion {
     private
         ReceptorComandos
             Cliente;
+    
+    private
+        String
+            Nombres = "Nombre",
+            Apellidos = "Apellido";
 
     public Conexion(int puerto){
         Socket
@@ -64,7 +69,21 @@ public class Conexion {
         Método provisional para recuperar el nombre del cliente
     */
     public String getNombre(){
-        return "Nombre de Prueba";
+        return (this.Nombres + " " + this.Apellidos);
+    }
+    
+    /*
+        Método provisional para recuperar los nombres inciales
+    */
+    public String getNombres(){
+        return this.Nombres;
+    }
+    
+    /*
+        Método provisional para recuperar los apellidos
+    */
+    public String getApellidos(){
+        return this.Apellidos;
     }
     
     /*
