@@ -41,7 +41,7 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
     private JButton BtnIzquierda = new JButton(ImgIzquierda);
     private JPanel PnlConexiones = new JPanel();
     //private JScrollPane ScrllConexiones = new JScrollPane(PnlConexiones);
-    private int Conexiones = 11;
+    private int Conexiones = 0;
     private ButtonGroup AgrupacionConexiones = new ButtonGroup();
     private JToggleButton[] ArregloConexiones;
     
@@ -143,6 +143,9 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
         this.ArregloConexiones = new JToggleButton[Conexiones];
         int x = 5;
         int y = 5;
+        if (this.Horizontal) {
+            y = 16;   
+        }
         for (int i = 0; i < this.Conexiones; i++) {
             this.ArregloConexiones[i] = new JToggleButton(""+i);
             this.AgrupacionConexiones.add(this.ArregloConexiones[i]);
@@ -150,7 +153,7 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
             this.ArregloConexiones[i].addMouseListener(this);
             if (i == 6) {
                 if (this.Horizontal) {
-                    y = 38;
+                    y = 49;
                     x = 5;
                 }
             }
