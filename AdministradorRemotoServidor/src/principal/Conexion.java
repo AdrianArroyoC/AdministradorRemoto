@@ -61,6 +61,13 @@ public class Conexion {
     }
     
     /*
+        Método provisional para recuperar el nombre del cliente
+    */
+    public String getNombre(){
+        return "Nombre de Prueba";
+    }
+    
+    /*
         Recuperar el cliente de esta conexión para control bidireccional
     */
     public ReceptorComandos getCliente(){

@@ -33,6 +33,15 @@ public class ManejadorConexiones implements Runnable{
     public Conexion getConexion(int indice){
         return this.Conexiones.get(indice);
     }
+    
+    /*
+        Método para recuperar un arreglo de todas las conexiones
+    */
+    public Conexion[] getConexiones(){
+        return this.Conexiones.toArray(
+            new Conexion[this.Conexiones.size()]
+        );
+    }
 
     @Override
     public void run() {
