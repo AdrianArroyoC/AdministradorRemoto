@@ -1,7 +1,6 @@
 package principal;
 
 import com.sun.awt.AWTUtilities;
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
@@ -13,7 +12,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 
 /**
@@ -39,10 +37,7 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
     private JButton BtnDerecha = new JButton(ImgDerecha);
     private JButton BtnAbajo = new JButton(ImgAbajo);
     private JButton BtnIzquierda = new JButton(ImgIzquierda);
-    //private JPanel PnlContenedor = new JPanel();
     private JPanel PnlConexiones = new JPanel();
-    //private JScrollPane ScrllConexiones = new JScrollPane(PnlConexiones);
-    private int Conexiones = 11;
     private ButtonGroup AgrupacionConexiones = new ButtonGroup();
     private JToggleButton[] ArregloConexiones;
     
@@ -65,9 +60,7 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
         this.add(this.BtnCerrar);
         this.add(this.BtnOcultar);
         this.add(this.PnlFlechas);
-        //this.add(this.PnlContenedor);
         this.add(this.PnlConexiones);
-        //this.add(this.ScrllConexiones);
         this.PnlFlechas.setLayout(null);
         this.PnlFlechas.add(this.BtnArriba);
         this.PnlFlechas.add(this.BtnDerecha);
@@ -87,7 +80,6 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
         this.setVisible(true);
         this.setAlwaysOnTop(true);
         this.CarteraClientes = new ManejadorConexiones(this);
-        //this.agregarQuitarBotones();
     }
     
     public void establecerUbicacion(int posicion) {
@@ -120,24 +112,18 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
     private void cambiarOrientacion() {
         
         if (this.Horizontal) {
-            this.setSize(800, 100);
-            //this.PnlContenedor.setPreferredSize(new Dimension(800, 100));
+            this.setSize(800, 211);
             this.BtnCerrar.setBounds(21, 11, 33, 33);
             this.BtnOcultar.setBounds(21, 56, 33, 33);
             this.PnlFlechas.setBounds(65, 0, 100, 100);
-            this.PnlConexiones.setBounds(176, 0, 600, 100);
-            //this.PnlConexiones.setLocation(176, 0);
-            //this.PnlConexiones.setPreferredSize(new Dimension(600, 278));
+            this.PnlConexiones.setBounds(176, 0, 600, 211);
         }
         else {
             this.setSize(100, 800);
-            //this.PnlContenedor.setPreferredSize(new Dimension(100, 800));
             this.BtnCerrar.setBounds(11, 21, 33, 33);
             this.BtnOcultar.setBounds(56, 21, 33, 33);
             this.PnlFlechas.setBounds(0, 65, 100, 100);
             this.PnlConexiones.setBounds(0, 176, 100, 600);
-            //this.PnlConexiones.setLocation(0, 176);
-            //this.PnlConexiones.setPreferredSize(new Dimension(414, 600));
         }
         agregarQuitarBotones();
     }
@@ -149,44 +135,69 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
     }
     
     public void agregarQuitarBotones() {       
-        Conexion[] conexiones = CarteraClientes.getConexiones();
-        this.ArregloConexiones = new JToggleButton[conexiones.length];
-        int x = 5;
-        int y = 5;
-        if (this.Horizontal) {
-            y = 16;   
+        try {
+            //Conexion[] conexiones = CarteraClientes.getConexiones();
+            PnlConexiones.removeAll();
+            Conexion[] conexiones = new Conexion[22];
+            if (conexiones.length != 0) {
+                this.ArregloConexiones = new JToggleButton[conexiones.length];
+                int x = 5;
+                int y = 5;
+                if (this.Horizontal) {
+                    y = 0; //16 
+                }
+                for (int i = 0; i < conexiones.length; i++) {
+                    //this.ArregloConexiones[i] = new JToggleButton(conexiones[i].getNombres());
+                    this.ArregloConexiones[i] = new JToggleButton(""+i);
+                    this.AgrupacionConexiones.add(this.ArregloConexiones[i]);
+                    //this.ArregloConexiones[i].setToolTipText(conexiones[i].getNombre());
+                    System.out.println(x + "," + y);
+                    if (i == 6 && this.Horizontal) {
+                            y = 35; //46
+                            x = 5;
+                    }
+                    else if (i == 12 && this.Horizontal) {
+                            y = 71;
+                            x = 5;
+                    }
+                    else if (i == 12 && !this.Horizontal) {
+                            y = 5;
+                            x = 100;
+                            this.setSize(190, 800);
+                            this.PnlConexiones.setBounds(0, 176, 190, 600);
+                    }
+                    else if (i == 18 && this.Horizontal) {
+                            y = 106;
+                            x = 5;
+                    }
+                    else if (i == 24 && this.Horizontal) {
+                            y = 141;
+                            x = 5;
+                    }
+                    else if (i == 24 && !this.Horizontal) {
+                            y = 5;
+                            x = 195;
+                            this.setSize(285, 800);
+                            this.PnlConexiones.setBounds(0, 176, 285, 600);
+                    }
+                    else if (i == 30 && this.Horizontal) {
+                            y = 176;
+                            x = 5;
+                    }
+                    if (this.Horizontal) {
+                        this.ArregloConexiones[i].setBounds(x, y, 90, 30);
+                        x += 95;
+                    }
+                    else {
+                        this.ArregloConexiones[i].setBounds(x, y, 90, 30);
+                        y += 33;
+                    }
+                    this.PnlConexiones.add(this.ArregloConexiones[i]);
+                } 
+                this.repaint();
+            }
+        } catch (Exception e) {
         }
-        for (int i = 0; i < this.Conexiones; i++) {
-            this.ArregloConexiones[i] = new JToggleButton(conexiones[i].getNombres());
-            this.AgrupacionConexiones.add(this.ArregloConexiones[i]);
-            this.ArregloConexiones[i].setToolTipText(conexiones[i].getNombre());
-            this.ArregloConexiones[i].addMouseListener(this);
-            if (i == 6) {
-                if (this.Horizontal) {
-                    y = 49;
-                    x = 5;
-                }
-            }
-            if (i == 12) {
-                if (this.Horizontal) {
-                    y = 71;
-                    x = 5;
-                }
-                else {
-                    //
-                }
-            }
-            if (this.Horizontal) {
-                this.ArregloConexiones[i].setBounds(x, y, 90, 30);
-                x += 95;
-            }
-            else {
-                this.ArregloConexiones[i].setBounds(x, y, 90, 30);
-                y += 33;
-            }
-            this.PnlConexiones.add(this.ArregloConexiones[i]);
-        } 
-        this.repaint();
     }
 
     @Override
@@ -210,9 +221,9 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
         else if (e.getSource() == this.BtnIzquierda) {
             this.establecerUbicacion(3);
         }
-        else {
+        else if (this.ArregloConexiones.length != 0) {
             int conexion = -1;
-            for (int i = 0; i < this.Conexiones; i++) {
+            for (int i = 0; i < this.ArregloConexiones.length; i++) {
                 this.ArregloConexiones[i].setSelected(false);
                 if (e.getSource() == this.ArregloConexiones[i]) {
                     this.ArregloConexiones[i].setSelected(true);
@@ -233,11 +244,17 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        for (int i = 0; i < this.Conexiones; i++) {
-            if (e.getSource() == this.ArregloConexiones[i]) {
-                
+        try {
+            if (this.ArregloConexiones.length != 0) {
+                for (int i = 0; i < this.ArregloConexiones.length; i++) {
+                    if (e.getSource() == this.ArregloConexiones[i]) {
+
+                    }
+                }
             }
+        } catch (Exception ex) {
         }
+        
     }
 
     @Override
