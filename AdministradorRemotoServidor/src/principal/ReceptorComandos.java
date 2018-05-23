@@ -1,6 +1,7 @@
 package principal;
 
 import java.awt.Robot;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -55,6 +56,9 @@ public class ReceptorComandos implements Runnable{
         Scanner
             FlujoEntrada;
 
+        PrintWriter
+            FlujoSalida;
+        
         int
             comando;
 
@@ -62,6 +66,11 @@ public class ReceptorComandos implements Runnable{
             /* Establecer el flujo de entrada */
             FlujoEntrada = new Scanner(
                 this.Zocalo.getInputStream()
+            );
+            
+            /* Establecer el flujo de salida */
+            FlujoSalida = new PrintWriter(
+                this.Zocalo.getOutputStream()
             );
 
             /* Hasta que la conexión sea detenida */
@@ -91,11 +100,16 @@ public class ReceptorComandos implements Runnable{
                             );
                             break;
                     }
+                }else{
+                    /* Mandar información al flujo de salida */
+                    FlujoSalida.println("-1");
+                    FlujoSalida.flush();
                 }
             }
             
-            /* Cliente ya no puede volver a ejecutar. Matar el flujo de entrada */
+            /* Cliente ya no puede volver a ejecutar. Matar los flujos de entrada y salida */
             FlujoEntrada.close();
+            FlujoSalida.close();
             
             /* Cerrar puerto de servidor */
             this.Zocalo.close();

@@ -8,7 +8,6 @@ package principal;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.Socket;
-import javax.swing.JFrame;
 
 /**
  *
@@ -58,7 +57,11 @@ public class ReceptorDatos implements Runnable{
             );
             
             while((Respuesta = this.FlujoEntrada.readLine()) != null){
-                continue;
+                if(Respuesta == "-1"){
+                    break;
+                }else{
+                    continue;
+                }
             }
             
             /* Servidor cerró conexión */
