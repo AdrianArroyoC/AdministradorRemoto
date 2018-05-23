@@ -28,7 +28,7 @@ public class VentanaCliente extends JFrame {
     JLabel LabelCodigo;
     JLabel LabelIpServidor;
     JLabel LabelStatus;
-    JLabel LabelEspaciador;
+    JLabel LabelPuerto;
 
     public void start() {
         LabelNombre = new JLabel();
@@ -43,9 +43,12 @@ public class VentanaCliente extends JFrame {
         LabelIpServidor = new JLabel();
         LabelIpServidor.setText("IP del servidor:");
         JTextField TextoIpServidor = new JTextField(15);
+        LabelPuerto = new JLabel();
+        LabelPuerto.setText("Puerto del servidor: ");
+        JTextField  TextoPuerto = new JTextField("9090", 12);
         LabelStatus=new JLabel();
         LabelStatus.setText("Estado: Pendiente del servidor");
-        LabelEspaciador = new JLabel();
+        
         LabelStatus.setHorizontalAlignment(JTextField.CENTER);
 
         //TextStatus.setText("Pendiente del servidor");
@@ -60,9 +63,9 @@ public class VentanaCliente extends JFrame {
         add(TextoCodigo);
         add(LabelIpServidor);
         add(TextoIpServidor);
+        add(LabelPuerto);
+        add(TextoPuerto);
         add(ButtonIniciar);
-        add(LabelEspaciador);
-        //add(LabelStatus);
         ButtonIniciar.addActionListener(
                 new ActionListener() {
 
