@@ -54,7 +54,7 @@ public class ReceptorComandos implements Runnable{
     public void run() {
         Scanner
             FlujoEntrada;
-        
+
         int
             comando;
 

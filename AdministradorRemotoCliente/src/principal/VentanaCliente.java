@@ -66,6 +66,9 @@ public class VentanaCliente extends JFrame {
         add(LabelPuerto);
         add(TextoPuerto);
         add(ButtonIniciar);
+        
+        VentanaCliente YoMismo = this; /* Hecho para poder utilizarno en el ActionListener */
+        
         ButtonIniciar.addActionListener(
                 new ActionListener() {
 
@@ -73,11 +76,23 @@ public class VentanaCliente extends JFrame {
                     ActionEvent e) {
 
                 try {
-                    JOptionPane.showMessageDialog(null, "no llenaste los datos correctamente!");
+                    //JOptionPane.showMessageDialog(null, "no llenaste los datos correctamente!");
+                    
+                    
+                    new Conexion(
+                        TextoIpServidor.getText(),
+                        Integer.valueOf(TextoPuerto.getText()),
+                        TextoNombre.getText(),
+                        TextoApellidos.getText(),
+                        TextoCodigo.getText(),
+                        YoMismo
+                    );
 
                 } catch (InputMismatchException ex) {
                     JOptionPane.showMessageDialog(null, ex.toString(), "Error al conectarse al server",
                             JOptionPane.ERROR_MESSAGE);
+                } catch (Exception exc){
+                    System.out.println("Error general: " + exc.getMessage());
                 }
 
             }
