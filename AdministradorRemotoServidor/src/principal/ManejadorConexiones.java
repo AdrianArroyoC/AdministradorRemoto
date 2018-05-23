@@ -6,7 +6,7 @@ import java.util.ArrayList;
  *
  * @author Carlos González <carlos85g at gmail.com>
  */
-public class ManejadorConexiones {
+public class ManejadorConexiones implements Runnable{
     private
         ArrayList<Conexion>
             Conexiones;
@@ -14,8 +14,28 @@ public class ManejadorConexiones {
     private
         int
             puerto = 4907;
+    
+    private
+        Thread
+            Hilo;
 
     public ManejadorConexiones() {
+        /* Crear el hilo */
+        this.Hilo = new Thread(this);
+        
+        /* Iniciar proceso para evitar que la ventana se trabe*/
+        this.Hilo.start();
+    }
+    
+    /*
+        Método para recuperar una conexión
+    */
+    public Conexion getConexion(int indice){
+        return this.Conexiones.get(indice);
+    }
+
+    @Override
+    public void run() {
         Conexion
             NuevaConexion;
         
@@ -24,15 +44,8 @@ public class ManejadorConexiones {
         while(true){
             NuevaConexion = new Conexion(puerto);
             
-            /* Nuevo cliente se ha conectado. Continuar */
+            /* Nuevo cliente se ha conectado. Añadir a la lista */
             this.Conexiones.add(NuevaConexion);
         }
-    }
-    
-    /*
-        Método para recuperar una conexión
-    */
-    public Conexion getConexion(int indice){
-        return this.Conexiones.get(indice);
     }
 }

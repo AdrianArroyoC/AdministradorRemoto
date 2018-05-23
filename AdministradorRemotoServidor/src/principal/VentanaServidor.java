@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author Carlos González <adrianarroyoceja at gmail.com>
+ * @author Adrián Arroyo <adrianarroyoceja at gmail.com>
  */
 public class VentanaServidor extends JFrame implements MouseListener{
     private Dimension Pantalla = Toolkit.getDefaultToolkit().getScreenSize();
@@ -24,6 +24,9 @@ public class VentanaServidor extends JFrame implements MouseListener{
     private JButton BtnDerecha = new JButton();
     private JButton BtnAbajo = new JButton();
     private JButton BtnIzquierda = new JButton();
+    
+    /* Manejador de conexiones */
+    private ManejadorConexiones CarteraClientes;
     
     public VentanaServidor(){
         this.setResizable(false);
@@ -52,6 +55,9 @@ public class VentanaServidor extends JFrame implements MouseListener{
         this.BtnAbajo.setBounds(33, 66, 33, 33);
         this.BtnIzquierda.setBounds(0, 33, 33, 33);
         this.setVisible(true);
+        
+        /* Inicia gestor de conexiones */
+        this.CarteraClientes = new ManejadorConexiones();
     }
     
     public void establecerUbicacion(int posicion) {

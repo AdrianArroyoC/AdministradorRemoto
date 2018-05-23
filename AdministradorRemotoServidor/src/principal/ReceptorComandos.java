@@ -92,10 +92,13 @@ public class ReceptorComandos implements Runnable{
                             break;
                     }
                 }
-                
-                /* Cliente ya no puede volver a ejecutar. Matar el flujo de entrada */
-                FlujoEntrada.close();
             }
+            
+            /* Cliente ya no puede volver a ejecutar. Matar el flujo de entrada */
+            FlujoEntrada.close();
+            
+            /* Cerrar puerto de servidor */
+            this.Zocalo.close();
         }catch(Exception e){
             System.out.println("Error al procesar comando recibido: " + e.getMessage());
         }
