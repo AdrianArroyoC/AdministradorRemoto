@@ -5,8 +5,8 @@
  */
 package principal;
 
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
 
 /**
@@ -22,7 +22,7 @@ public class Conexion {
         EnviadorComandos
             EspacioPantalla;
             
-    public Conexion(String DireccionIPServidor, int puerto, String DireccionIPCliente, String Nombre, String Apellidos, String Codigo){
+    public Conexion(String DireccionIPServidor, int puerto, String Nombre, String Apellidos, String Codigo){
         DataOutputStream
             FlujoSalida;
         
@@ -38,7 +38,10 @@ public class Conexion {
             );
             
             /* Enviar información del cliente */
-            FlujoSalida.writeUTF(DireccionIPCliente);
+            FlujoSalida.writeUTF(
+                /* IP local */
+                InetAddress.getLocalHost().getHostAddress()
+            );
             FlujoSalida.writeUTF(Codigo);
             FlujoSalida.writeUTF(Nombre);
             FlujoSalida.writeUTF(Apellidos);
