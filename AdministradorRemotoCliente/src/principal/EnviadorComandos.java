@@ -19,28 +19,35 @@ import javax.swing.JFrame;
  *
  * @author Carlos González <carlos85g at gmail.com>
  */
-public class EnviadorComandos implements KeyListener, MouseMotionListener, MouseListener{    
+public class EnviadorComandos implements Runnable, KeyListener, MouseMotionListener, MouseListener{    
     private
         Socket
             Zocalo;
-    
-    private
-        Robot
-            Automata;
     
     private
         JFrame
             Capturista;
     
     private
+        VentanaCliente
+            Ventana;
+    
+    private
         PrintWriter
             FlujoSalida;
-
-    public EnviadorComandos(Socket Zocalo) {
+    
+    private
+        Thread
+            Hilo;
         
+    public EnviadorComandos(Socket Zocalo, VentanaCliente Pantalla) {
+
         /* Establecer el socket */
         this.Zocalo = Zocalo;
         
+        /* Establecer la ventana para control bidireccional */
+        this.Ventana = Ventana;
+                
         /* Asignar capturista */
         this.Capturista = new JFrame();
         this.Capturista.setExtendedState(JFrame.MAXIMIZED_BOTH); 
@@ -56,14 +63,11 @@ public class EnviadorComandos implements KeyListener, MouseMotionListener, Mouse
         this.Capturista.addMouseListener(this);
         this.Capturista.addMouseMotionListener(this);
         
-        /* Iniciar flujo de salida */
-        try{
-            this.FlujoSalida = new PrintWriter(
-                this.Zocalo.getOutputStream()
-            );
-        } catch(Exception e) {
-            System.out.println("No fue posible iniciar el flujo de salida: " + e.getMessage());
-        }
+        /* Crear hilo */
+        this.Hilo = new Thread(this);
+        
+        /* Iniciar el hilo */
+        this.Hilo.start();
     }
 
     @Override
@@ -79,7 +83,7 @@ public class EnviadorComandos implements KeyListener, MouseMotionListener, Mouse
 
     @Override
     public void keyReleased(KeyEvent e) {
-       this.FlujoSalida.println(Comandos.KEY_RELEASE);
+        this.FlujoSalida.println(Comandos.KEY_RELEASE);
         this.FlujoSalida.println(e.getKeyCode());
         this.FlujoSalida.flush(); 
     }
@@ -128,5 +132,28 @@ public class EnviadorComandos implements KeyListener, MouseMotionListener, Mouse
 
     @Override
     public void mouseExited(MouseEvent e) {
+    }
+
+    @Override
+    public void run() {
+        /* Iniciar flujo de salida */
+        try{
+            this.FlujoSalida = new PrintWriter(
+                this.Zocalo.getOutputStream()
+            );
+            
+            while(!this.FlujoSalida.checkError()){
+                continue;
+            }
+            
+            /* Cerrar flujo */
+            this.FlujoSalida.close();
+            
+            /* Mostrar ventana */
+            this.Ventana.mostrarVentana(true);
+            
+        } catch(Exception e) {
+            System.out.println("No fue posible iniciar el flujo de salida: " + e.getMessage());
+        }
     }
 }
