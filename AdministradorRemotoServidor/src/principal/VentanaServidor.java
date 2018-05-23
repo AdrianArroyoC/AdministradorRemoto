@@ -18,7 +18,7 @@ import javax.swing.JToggleButton;
 
 /**
  *
- * @author Carlos González <adrianarroyoceja at gmail.com>
+ * @author Adrián Arroyo <adrianarroyoceja at gmail.com>
  */
 
 public class VentanaServidor extends JFrame implements MouseListener, KeyListener {
@@ -39,11 +39,15 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
     private JButton BtnDerecha = new JButton(ImgDerecha);
     private JButton BtnAbajo = new JButton(ImgAbajo);
     private JButton BtnIzquierda = new JButton(ImgIzquierda);
+    //private JPanel PnlContenedor = new JPanel();
     private JPanel PnlConexiones = new JPanel();
     //private JScrollPane ScrllConexiones = new JScrollPane(PnlConexiones);
-    private int Conexiones = 0;
+    private int Conexiones = 11;
     private ButtonGroup AgrupacionConexiones = new ButtonGroup();
     private JToggleButton[] ArregloConexiones;
+    
+    /* Manejador de conexiones */
+    private ManejadorConexiones CarteraClientes;
     
     public VentanaServidor(){
         this.setResizable(false);
@@ -54,13 +58,14 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
         this.setUndecorated(true);
         this.establecerUbicacion(0);
         this.PnlConexiones.setLayout(null);
-        //this.PnlConexiones.setAutoscrolls(true);
+        this.PnlConexiones.setAutoscrolls(true);
         AWTUtilities.setWindowOpaque(this, false);
         this.PnlFlechas.setOpaque(false);
         this.PnlConexiones.setOpaque(false);
         this.add(this.BtnCerrar);
         this.add(this.BtnOcultar);
         this.add(this.PnlFlechas);
+        //this.add(this.PnlContenedor);
         this.add(this.PnlConexiones);
         //this.add(this.ScrllConexiones);
         this.PnlFlechas.setLayout(null);
@@ -80,7 +85,9 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
         this.BtnIzquierda.setBounds(0, 33, 33, 33);
         this.addKeyListener(this);
         this.setVisible(true);
-        this.agregarQuitarBotones();
+        this.setAlwaysOnTop(true);
+        this.CarteraClientes = new ManejadorConexiones(this);
+        //this.agregarQuitarBotones();
     }
     
     public void establecerUbicacion(int posicion) {
@@ -114,6 +121,7 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
         
         if (this.Horizontal) {
             this.setSize(800, 100);
+            //this.PnlContenedor.setPreferredSize(new Dimension(800, 100));
             this.BtnCerrar.setBounds(21, 11, 33, 33);
             this.BtnOcultar.setBounds(21, 56, 33, 33);
             this.PnlFlechas.setBounds(65, 0, 100, 100);
@@ -123,6 +131,7 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
         }
         else {
             this.setSize(100, 800);
+            //this.PnlContenedor.setPreferredSize(new Dimension(100, 800));
             this.BtnCerrar.setBounds(11, 21, 33, 33);
             this.BtnOcultar.setBounds(56, 21, 33, 33);
             this.PnlFlechas.setBounds(0, 65, 100, 100);
@@ -139,17 +148,18 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
         this.PnlFlechas.setVisible(mostrar);
     }
     
-    private void agregarQuitarBotones() {
-        this.ArregloConexiones = new JToggleButton[Conexiones];
+    public void agregarQuitarBotones() {       
+        Conexion[] conexiones = CarteraClientes.getConexiones();
+        this.ArregloConexiones = new JToggleButton[conexiones.length];
         int x = 5;
         int y = 5;
         if (this.Horizontal) {
             y = 16;   
         }
         for (int i = 0; i < this.Conexiones; i++) {
-            this.ArregloConexiones[i] = new JToggleButton(""+i);
+            this.ArregloConexiones[i] = new JToggleButton(conexiones[i].getNombres());
             this.AgrupacionConexiones.add(this.ArregloConexiones[i]);
-            this.ArregloConexiones[i].setToolTipText("Mas información");
+            this.ArregloConexiones[i].setToolTipText(conexiones[i].getNombre());
             this.ArregloConexiones[i].addMouseListener(this);
             if (i == 6) {
                 if (this.Horizontal) {
