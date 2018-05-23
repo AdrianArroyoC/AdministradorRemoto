@@ -41,7 +41,7 @@ public class VentanaCliente extends JFrame {
         LabelCodigo.setText("Código:              ");
         JTextField TextoCodigo = new JTextField(15);
         LabelIpServidor = new JLabel();
-        LabelIpServidor.setText("Ip del Servidor:");
+        LabelIpServidor.setText("IP del servidor:");
         JTextField TextoIpServidor = new JTextField(15);
         LabelStatus=new JLabel();
         LabelStatus.setText("Estado: Pendiente del servidor");
