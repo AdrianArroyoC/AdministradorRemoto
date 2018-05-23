@@ -1,19 +1,20 @@
 package principal;
 
 import com.sun.awt.AWTUtilities;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.HashSet;
-import java.util.Set;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JToggleButton;
 
 /**
  *
@@ -24,20 +25,25 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
     private Dimension Pantalla = Toolkit.getDefaultToolkit().getScreenSize();
     private int LargoPantalla = (int) Pantalla.getHeight();
     private int AnchoPantalla = (int) Pantalla.getWidth();
-    private ImageIcon ImgCerrar = new ImageIcon("..\\imagenes\\cerrar.png");
-    private ImageIcon ImgOcultar = new ImageIcon("..\\imagenes\\ocultar.png");
-    private ImageIcon ImgArriba = new ImageIcon("..\\imagenes\\arriba.png");
-    private ImageIcon ImgDerecha = new ImageIcon("..\\imagenes\\derecha.png");
-    private ImageIcon ImgAbajo = new ImageIcon("..\\imagenes\\abajo.png");
-    private ImageIcon ImgIzquierda = new ImageIcon("..\\imagenes\\izquierda.png");
+    private final ImageIcon ImgCerrar = new ImageIcon(getClass().getResource("..\\imagenes\\cerrar.png"));
+    private final ImageIcon ImgOcultar = new ImageIcon(getClass().getResource("..\\imagenes\\ocultar.png"));
+    private final ImageIcon ImgArriba = new ImageIcon(getClass().getResource("..\\imagenes\\arriba.png"));
+    private final ImageIcon ImgDerecha = new ImageIcon(getClass().getResource("..\\imagenes\\derecha.png"));
+    private final ImageIcon ImgAbajo = new ImageIcon(getClass().getResource("..\\imagenes\\abajo.png"));
+    private final ImageIcon ImgIzquierda = new ImageIcon(getClass().getResource("..\\imagenes\\izquierda.png"));
     private JButton BtnCerrar = new JButton(ImgCerrar);
     private JButton BtnOcultar = new JButton(ImgOcultar);
+    private boolean Horizontal = false;
     private JPanel PnlFlechas = new JPanel();
     private JButton BtnArriba = new JButton(ImgArriba);
     private JButton BtnDerecha = new JButton(ImgDerecha);
     private JButton BtnAbajo = new JButton(ImgAbajo);
     private JButton BtnIzquierda = new JButton(ImgIzquierda);
-    private final Set<Character> teclas = new HashSet<Character>();
+    private JPanel PnlConexiones = new JPanel();
+    //private JScrollPane ScrllConexiones = new JScrollPane(PnlConexiones);
+    private int Conexiones = 11;
+    private ButtonGroup AgrupacionConexiones = new ButtonGroup();
+    private JToggleButton[] ArregloConexiones;
     
     public VentanaServidor(){
         this.setResizable(false);
@@ -47,11 +53,16 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
         this.setAlwaysOnTop(true);
         this.setUndecorated(true);
         this.establecerUbicacion(0);
+        this.PnlConexiones.setLayout(null);
+        //this.PnlConexiones.setAutoscrolls(true);
         AWTUtilities.setWindowOpaque(this, false);
-        this.PnlFlechas.setOpaque(false); 
+        this.PnlFlechas.setOpaque(false);
+        this.PnlConexiones.setOpaque(false);
         this.add(this.BtnCerrar);
         this.add(this.BtnOcultar);
         this.add(this.PnlFlechas);
+        this.add(this.PnlConexiones);
+        //this.add(this.ScrllConexiones);
         this.PnlFlechas.setLayout(null);
         this.PnlFlechas.add(this.BtnArriba);
         this.PnlFlechas.add(this.BtnDerecha);
@@ -69,23 +80,28 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
         this.BtnIzquierda.setBounds(0, 33, 33, 33);
         this.addKeyListener(this);
         this.setVisible(true);
+        this.agregarQuitarBotones();
     }
     
     public void establecerUbicacion(int posicion) {
         if (posicion == 0) {
-            this.cambiarOrientacion(true);
+            this.Horizontal = true;
+            this.cambiarOrientacion();
             this.setLocation(this.calcularMitad(this.AnchoPantalla, this.getSize().width),0);
         }
         else if (posicion == 1) {
-            this.cambiarOrientacion(false);
+            this.Horizontal = false;
+            this.cambiarOrientacion();
             this.setLocation(this.AnchoPantalla - this.getSize().width,this.calcularMitad(this.LargoPantalla, this.getSize().height));
         }
         else if (posicion == 2) {
-            this.cambiarOrientacion(true);
+            this.Horizontal = true;
+            this.cambiarOrientacion();
             this.setLocation(this.calcularMitad(this.AnchoPantalla, this.getSize().width), this.LargoPantalla - this.getSize().height);
         }
         else if (posicion == 3) {
-            this.cambiarOrientacion(false);
+            this.Horizontal = false;
+            this.cambiarOrientacion();
             this.setLocation(0, this.calcularMitad(this.LargoPantalla, this.getSize().height));
         }
     }
@@ -94,25 +110,70 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
         return medTot / 2 - medEl / 2;
     }
     
-    private void cambiarOrientacion(boolean horizontal) {
-        if (horizontal) {
+    private void cambiarOrientacion() {
+        
+        if (this.Horizontal) {
             this.setSize(800, 100);
-            this.BtnCerrar.setBounds(11, 11, 33, 33);
-            this.BtnOcultar.setBounds(11, 56, 33, 33);
-            this.PnlFlechas.setBounds(89, 0, 100, 100);
+            this.BtnCerrar.setBounds(21, 11, 33, 33);
+            this.BtnOcultar.setBounds(21, 56, 33, 33);
+            this.PnlFlechas.setBounds(65, 0, 100, 100);
+            this.PnlConexiones.setBounds(176, 0, 600, 100);
+            //this.PnlConexiones.setLocation(176, 0);
+            //this.PnlConexiones.setPreferredSize(new Dimension(600, 278));
         }
         else {
             this.setSize(100, 800);
-            this.BtnCerrar.setBounds(11, 11, 33, 33);
-            this.BtnOcultar.setBounds(56, 11, 33, 33);
-            this.PnlFlechas.setBounds(0, 89, 100, 100);
+            this.BtnCerrar.setBounds(11, 21, 33, 33);
+            this.BtnOcultar.setBounds(56, 21, 33, 33);
+            this.PnlFlechas.setBounds(0, 65, 100, 100);
+            this.PnlConexiones.setBounds(0, 176, 100, 600);
+            //this.PnlConexiones.setLocation(0, 176);
+            //this.PnlConexiones.setPreferredSize(new Dimension(414, 600));
         }
+        agregarQuitarBotones();
     }
     
     private void ocultarDesocultar(boolean mostrar) {
         this.BtnCerrar.setVisible(mostrar);
         this.BtnOcultar.setVisible(mostrar);
         this.PnlFlechas.setVisible(mostrar);
+    }
+    
+    private void agregarQuitarBotones() {
+        this.ArregloConexiones = new JToggleButton[Conexiones];
+        int x = 5;
+        int y = 5;
+        for (int i = 0; i < this.Conexiones; i++) {
+            this.ArregloConexiones[i] = new JToggleButton(""+i);
+            this.AgrupacionConexiones.add(this.ArregloConexiones[i]);
+            this.ArregloConexiones[i].setToolTipText("Mas información");
+            this.ArregloConexiones[i].addMouseListener(this);
+            if (i == 6) {
+                if (this.Horizontal) {
+                    y = 38;
+                    x = 5;
+                }
+            }
+            if (i == 12) {
+                if (this.Horizontal) {
+                    y = 71;
+                    x = 5;
+                }
+                else {
+                    //
+                }
+            }
+            if (this.Horizontal) {
+                this.ArregloConexiones[i].setBounds(x, y, 90, 30);
+                x += 95;
+            }
+            else {
+                this.ArregloConexiones[i].setBounds(x, y, 90, 30);
+                y += 33;
+            }
+            this.PnlConexiones.add(this.ArregloConexiones[i]);
+        } 
+        this.repaint();
     }
 
     @Override
@@ -136,6 +197,17 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
         else if (e.getSource() == this.BtnIzquierda) {
             this.establecerUbicacion(3);
         }
+        else {
+            int conexion = -1;
+            for (int i = 0; i < this.Conexiones; i++) {
+                this.ArregloConexiones[i].setSelected(false);
+                if (e.getSource() == this.ArregloConexiones[i]) {
+                    this.ArregloConexiones[i].setSelected(true);
+                    conexion = i;
+                }
+            }
+            //Metodo para realizar la conexion
+        }
     }
 
     @Override
@@ -148,6 +220,11 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
 
     @Override
     public void mouseEntered(MouseEvent e) {
+        for (int i = 0; i < this.Conexiones; i++) {
+            if (e.getSource() == this.ArregloConexiones[i]) {
+                
+            }
+        }
     }
 
     @Override
@@ -156,7 +233,6 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
 
     @Override
     public void keyTyped(KeyEvent e) {
-
     }
 
     @Override
