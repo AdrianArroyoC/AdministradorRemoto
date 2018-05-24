@@ -37,7 +37,7 @@ public class Conexion {
         boolean
             vivo;
 
-    public Conexion(int puerto){
+    public Conexion(ServerSocket ZocaloServidor){
         Socket
             Zocalo;
         
@@ -47,21 +47,17 @@ public class Conexion {
         GraphicsDevice
             DispositivoGraficos;
 
+        this.ZocaloServidor = ZocaloServidor;
+        
         try{
-            System.out.println("Esperando conexión del cliente...");
-            
-            /* Crear socket del servidor */
-            this.ZocaloServidor = new ServerSocket(puerto);
-            
-            /* Reusar socket */
-            this.ZocaloServidor.setReuseAddress(true);
-            
             /* Obtener el dispositivo de gráficos a controlar */
             DispositivoGraficos = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 
             /* Crear el autómata con el dispositivo */
             Automata = new Robot(DispositivoGraficos);
 
+            System.out.println("Esperando conexión del cliente...");
+            
             /* Esperar cliente */
             Zocalo = this.ZocaloServidor.accept();
 

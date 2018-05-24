@@ -1,5 +1,6 @@
 package principal;
 
+import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -8,6 +9,10 @@ import java.util.Iterator;
  * @author Carlos González <carlos85g at gmail.com>
  */
 public class ManejadorConexiones{
+    private
+        ServerSocket
+            ZocaloServidor;
+
     private
         ArrayList<Conexion>
             Conexiones;
@@ -84,33 +89,39 @@ public class ManejadorConexiones{
             actualizar = false;
        
         ArrayList<Conexion>
-            CopiaConexiones = (ArrayList<Conexion>)this.Conexiones.clone();
+            CopiaConexiones;
         
         Iterator
-            Iterador = CopiaConexiones.iterator();
+            Iterador;
         
-        /* Remover actual */
-        synchronized (this.Conexiones) {
-            while(Iterador.hasNext()){
-                ClienteTemp = (Conexion)Iterador.next();
+        while(true){
+            /* Copiar conexiones actuales */
+            CopiaConexiones = (ArrayList<Conexion>)this.Conexiones.clone();
+        
+            /* Obtener iterador */
+            Iterador = CopiaConexiones.iterator();
 
-                /* Si el cliente no está vivo, remover */
-                if(!ClienteTemp.isVivo()){
-                    /* Necesario volver a cargar botones */
-                    actualizar = true;
+            synchronized (this.Conexiones) {
+                while(Iterador.hasNext()){
+                    ClienteTemp = (Conexion)Iterador.next();
 
-                    Iterador.remove();
+                    /* Si el cliente no está vivo, remover */
+                    if(!ClienteTemp.isVivo()){
+                        /* Necesario volver a cargar botones */
+                        actualizar = true;
+
+                        /* Remover actual */
+                        Iterador.remove();
+                    }
                 }
             }
-        }
-        
-        
-        
-        if(actualizar){
-            this.Conexiones = CopiaConexiones;
-            
-            /* Llamar a la ventana para actualizar interfaz */
-            this.Ventana.agregarQuitarBotones();
+
+            if(actualizar){
+                this.Conexiones = CopiaConexiones;
+
+                /* Llamar a la ventana para actualizar interfaz */
+                this.Ventana.agregarQuitarBotones();
+            }
         }
     }
     
@@ -121,24 +132,37 @@ public class ManejadorConexiones{
         Conexion
             NuevaConexion;
 
-        while(true){
-            NuevaConexion = new Conexion(this.puerto);
-            
-            /* Esperar a que esté listo */
-            while(!NuevaConexion.isListo()){
-                continue;
-            }
+        try {
+            /* Crear socket del servidor */
+            this.ZocaloServidor = new ServerSocket(this.puerto);
 
-            /* Conexión está lista */
-            if(this.getConexion(NuevaConexion.getDireccionIP()) == null){
-                /* Nuevo cliente se ha conectado. Añadir a la lista */
-                synchronized (this.Conexiones) {
-                    this.Conexiones.add(NuevaConexion);
+            /* Reusar socket */
+            this.ZocaloServidor.setReuseAddress(true);
+
+
+            while(true){
+                NuevaConexion = new Conexion(this.ZocaloServidor);
+
+                /* Esperar a que esté listo */
+                while(!NuevaConexion.isListo()){
+                    continue;
                 }
-                
-                /* Llamar a la ventana para actualizar interfaz */
-                this.Ventana.agregarQuitarBotones();
+
+                /* Conexión está lista */
+                if(this.getConexion(NuevaConexion.getDireccionIP()) == null){
+                    /* Nuevo cliente se ha conectado. Añadir a la lista */
+                    synchronized (this.Conexiones) {
+                        this.Conexiones.add(NuevaConexion);
+                    }
+
+                    /* Llamar a la ventana para actualizar interfaz */
+                    this.Ventana.agregarQuitarBotones();
+                }
             }
+        } catch (Exception e) {
+            System.out.println(this.getClass() + ": No pudo ser creada una nueva conexión: " + e.getMessage());
         }
+        
+        
     }
 }

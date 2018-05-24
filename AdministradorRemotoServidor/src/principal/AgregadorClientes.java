@@ -32,8 +32,6 @@ public class AgregadorClientes implements Runnable{
 
     @Override
     public void run() {
-        while(true){
-            this.CarteraClientes.agregarConexiones();
-        }
+        this.CarteraClientes.agregarConexiones();
     }
 }

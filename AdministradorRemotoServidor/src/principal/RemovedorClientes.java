@@ -31,8 +31,6 @@ public class RemovedorClientes implements Runnable{
 
     @Override
     public void run() {
-        while(true){
-            this.CarteraClientes.purgarConexiones();
-        }
+        this.CarteraClientes.purgarConexiones();
     }
 }
