@@ -4,6 +4,7 @@ import java.awt.Robot;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 
 /**
  *
@@ -37,7 +38,7 @@ public class ReceptorComandos implements Runnable{
             Codigo,
             DireccionIP;
     
-    private
+    private volatile
         boolean
             listo = false,
             continuar, /* Bandera para especificar si es necesario detener control */
@@ -118,7 +119,7 @@ public class ReceptorComandos implements Runnable{
     /*
         Método para verificar que la clase está lista
     */
-    public boolean isListo(){
+    public boolean isListo(){       
         return this.listo;
     }
     
@@ -183,10 +184,10 @@ public class ReceptorComandos implements Runnable{
             /* Cliente ya no puede volver a ejecutar. Matar los flujos de entrada y salida */
             /*this.FlujoEntrada.close();*/;
             /*this.FlujoSalida.close()*/;
+        }catch(SocketException se){
+            System.out.println("Conexión ha muerto");
         }catch(Exception e){
             System.out.println("Error al procesar comando recibido: " + e.getMessage());
-            
-            e.printStackTrace();
         }
         
         /* Cerrar hilo */

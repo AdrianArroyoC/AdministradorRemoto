@@ -17,11 +17,11 @@ public class Conexion {
         ServerSocket
             ZocaloServidor;
     
-    private
+    private volatile
         ReceptorComandos
             Cliente;
     
-    private
+    private volatile
         EnviadorDatos
             Enviador;
     
@@ -33,7 +33,7 @@ public class Conexion {
         DataOutputStream
             FlujoSalida;
     
-    private
+    private volatile
         boolean
             vivo;
 
@@ -52,6 +52,9 @@ public class Conexion {
             
             /* Crear socket del servidor */
             this.ZocaloServidor = new ServerSocket(puerto);
+            
+            /* Reusar socket */
+            this.ZocaloServidor.setReuseAddress(true);
             
             /* Obtener el dispositivo de gráficos a controlar */
             DispositivoGraficos = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -85,6 +88,9 @@ public class Conexion {
             this.Enviador = new EnviadorDatos(
                 Zocalo
             );
+            
+            /* Definir que está vivo */
+            this.vivo = true;
         }catch (Exception e){
             /* Error. Conexión muerta */
             this.vivo = false;
@@ -112,18 +118,21 @@ public class Conexion {
     /*
         Método para verificar que la clase está lista para usar
     */
-    public boolean isListo(){
-        return this.Cliente.isListo();
+    public boolean isListo(){       
+        boolean
+            retorno = false;
+        
+        if(this.Cliente != null && this.Enviador != null){
+            retorno = (this.Cliente.isListo() && this.Enviador.isListo());
+        }
+        
+        return retorno;
     }
     
     /*
         Método para recuperar el nombre del cliente
     */
     public String getNombre(){
-        /* Esperar a que esté lista */
-        while(!this.Cliente.isListo()){
-            continue;
-        }
         return this.Cliente.getNombre();
     }
     
@@ -131,10 +140,6 @@ public class Conexion {
         Método para recuperar los nombres inciales
     */
     public String getNombres(){
-        /* Esperar a que esté lista */
-        while(!this.Cliente.isListo()){
-            continue;
-        }
         return this.Cliente.getNombres();
     }
     
@@ -142,10 +147,6 @@ public class Conexion {
         Método para recuperar los apellidos
     */
     public String getApellidos(){
-        /* Esperar a que esté lista */
-        while(!this.Cliente.isListo()){
-            continue;
-        }
         return this.Cliente.getApellidos();
     }
     
@@ -153,10 +154,6 @@ public class Conexion {
         Método para recuperar el código
     */
     public String getCodigo(){
-        /* Esperar a que esté lista */
-        while(!this.Cliente.isListo()){
-            continue;
-        }
         return this.Cliente.getCodigo();
     }
     
@@ -164,10 +161,6 @@ public class Conexion {
         Método para recuperar la IP
     */
     public String getDireccionIP(){
-        /* Esperar a que esté lista */
-        while(!this.Cliente.isListo()){
-            continue;
-        }
         return this.Cliente.getDireccionIP();
     }
     
@@ -175,10 +168,6 @@ public class Conexion {
         Recuperar el cliente de esta conexión para control bidireccional
     */
     public ReceptorComandos getCliente(){
-        /* Esperar a que esté lista */
-        while(!this.Cliente.isListo()){
-            continue;
-        }
         return this.Cliente;
     }
     

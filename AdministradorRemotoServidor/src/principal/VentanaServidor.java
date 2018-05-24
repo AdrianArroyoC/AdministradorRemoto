@@ -134,9 +134,9 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
         this.PnlFlechas.setVisible(mostrar);
     }
     
-    public void agregarQuitarBotones() {       
+    public void agregarQuitarBotones() {
         try {
-            Conexion[] conexiones = CarteraClientes.getConexiones();
+            Conexion[] conexiones = CarteraClientes.getConexiones();            
             PnlConexiones.removeAll();
             //Conexion[] conexiones = new Conexion[22];
             if (conexiones.length != 0) {
@@ -192,9 +192,11 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
                         y += 33;
                     }
                     this.PnlConexiones.add(this.ArregloConexiones[i]);
-                } 
-                this.repaint();
+                }
             }
+            /* Debe hacerse independientemente de si hay o no conexiones */
+            this.revalidate();
+            this.repaint();
         } catch (Exception e) {
         }
     }

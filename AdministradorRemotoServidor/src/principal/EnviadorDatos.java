@@ -10,6 +10,7 @@ import java.awt.Toolkit;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 
 /**
  *
@@ -32,9 +33,10 @@ public class EnviadorDatos implements Runnable{
         DataOutputStream
             FlujoSalida;
     
-    private
+    private volatile 
         boolean
-            vivo;
+            vivo = true,
+            listo = false;
     
     public EnviadorDatos(Socket Zocalo) {
         /* Pasar socket */
@@ -52,6 +54,13 @@ public class EnviadorDatos implements Runnable{
     */
     public boolean isVivo(){
         return this.vivo;
+    }
+    
+    /*
+        Método para verificar que la clase está lista
+    */
+    public boolean isListo(){        
+        return this.listo;
     }
 
     @Override
@@ -77,7 +86,10 @@ public class EnviadorDatos implements Runnable{
             this.FlujoSalida.writeInt(ancho);            
             this.FlujoSalida.writeInt(alto);
             this.FlujoSalida.flush();
-
+            
+            /* Datos enviados. Clase lista */
+            this.listo = true;
+            
             while(this.vivo){
                 continue;
             }
@@ -89,7 +101,9 @@ public class EnviadorDatos implements Runnable{
             /* Cerrar flujos */
             /*this.FlujoEntrada.close()*/;
             /*this.FlujoSalida.close()*/;
-        } catch (Exception e) {
+        }catch(SocketException se){
+            System.out.println("Conexión ha muerto");
+        }catch (Exception e) {
             System.out.println(this.getClass() + ": No fue posible continuar: " + e.getMessage());
         }
         

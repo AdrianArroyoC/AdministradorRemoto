@@ -80,27 +80,35 @@ public class ManejadorConexiones{
         Conexion
             ClienteTemp;
         
-        Iterator
-            Iterador = this.Conexiones.iterator();
-        
         boolean
             actualizar = false;
+       
+        ArrayList<Conexion>
+            CopiaConexiones = (ArrayList<Conexion>)this.Conexiones.clone();
         
-        /* Buscar por la IP */        
-        while(Iterador.hasNext()){
-            ClienteTemp = (Conexion)Iterador.next();
-            
-            /* Si el cliente no está vivo, remover */
-            if(!ClienteTemp.isVivo()){
-                /* Necesario volver a cargar botones */
-                actualizar = true;
-                
-                /* Remover actual */
-                Iterador.remove();
+        Iterator
+            Iterador = CopiaConexiones.iterator();
+        
+        /* Remover actual */
+        synchronized (this.Conexiones) {
+            while(Iterador.hasNext()){
+                ClienteTemp = (Conexion)Iterador.next();
+
+                /* Si el cliente no está vivo, remover */
+                if(!ClienteTemp.isVivo()){
+                    /* Necesario volver a cargar botones */
+                    actualizar = true;
+
+                    Iterador.remove();
+                }
             }
         }
         
+        
+        
         if(actualizar){
+            this.Conexiones = CopiaConexiones;
+            
             /* Llamar a la ventana para actualizar interfaz */
             this.Ventana.agregarQuitarBotones();
         }
@@ -115,27 +123,21 @@ public class ManejadorConexiones{
 
         while(true){
             NuevaConexion = new Conexion(this.puerto);
-
-            System.out.println("CONEXION LISTA");
             
             /* Esperar a que esté listo */
             while(!NuevaConexion.isListo()){
                 continue;
             }
 
-            System.out.println("PREPARADO");
-
             /* Conexión está lista */
-            if(this.getConexion(NuevaConexion.getDireccionIP()) == null){                    
+            if(this.getConexion(NuevaConexion.getDireccionIP()) == null){
                 /* Nuevo cliente se ha conectado. Añadir a la lista */
-                this.Conexiones.add(NuevaConexion);
-
-                System.out.println("Conexión agregada");
-
+                synchronized (this.Conexiones) {
+                    this.Conexiones.add(NuevaConexion);
+                }
+                
                 /* Llamar a la ventana para actualizar interfaz */
                 this.Ventana.agregarQuitarBotones();
-            }else{
-                System.out.println("CONEXION YA ESTABLECIDA");
             }
         }
     }

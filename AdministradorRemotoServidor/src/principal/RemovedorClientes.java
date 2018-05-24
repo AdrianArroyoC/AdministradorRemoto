@@ -10,7 +10,7 @@ package principal;
  * @author Carlos González <carlos85g at gmail.com>
  */
 public class RemovedorClientes implements Runnable{
-private
+    private
         Thread
             Hilo;
     
