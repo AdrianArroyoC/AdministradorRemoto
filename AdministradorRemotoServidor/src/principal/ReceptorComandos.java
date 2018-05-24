@@ -3,6 +3,7 @@ package principal;
 import java.awt.Robot;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketException;
 
@@ -153,9 +154,11 @@ public class ReceptorComandos implements Runnable{
             /* Hasta que la conexión sea detenida */
             while(this.vivo){
                 /* Si está especificado que el usuario está bloqueado, esperar */
-                if(this.continuar){
-                    comando = this.FlujoEntrada.readInt();
+                
+                comando = this.FlujoEntrada.readInt();
 
+                /* Sólo ejecutar si no está bloqueado */
+                if(this.continuar){
                     /* Ejecutar comando de acuerdo a identificación */
                     switch(comando){
                         case Comandos.MOUSE_PRESS:
@@ -185,10 +188,12 @@ public class ReceptorComandos implements Runnable{
             this.FlujoSalida.flush();
 
             /* Cliente ya no puede volver a ejecutar. Matar los flujos de entrada y salida */
-            /*this.FlujoEntrada.close();*/;
-            /*this.FlujoSalida.close()*/;
+            this.FlujoEntrada.close();;
+            this.FlujoSalida.close();
         }catch(SocketException se){
             System.out.println("Conexión ha muerto");
+        }catch(IOException ioe){
+            System.out.println("Flujos han sido cerrados");
         }catch(Exception e){
             System.out.println("Error al procesar comando recibido: " + e.getMessage());
         }

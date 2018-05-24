@@ -75,8 +75,10 @@ public class EnviadorComandos implements Runnable, KeyListener, MouseMotionListe
         this.Capturista.setUndecorated(true);
         //this.Capturista.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
         
-        this.Capturista.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        this.Capturista.setSize(servidorAncho, servidorAlto);
+        this.Capturista.setSize(800, 600);
+        
+        /*this.Capturista.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.Capturista.setSize(servidorAncho, servidorAlto);*/
         
         this.Capturista.setResizable(false);
         this.Capturista.setVisible(true);

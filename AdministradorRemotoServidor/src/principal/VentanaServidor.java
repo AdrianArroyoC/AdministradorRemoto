@@ -145,7 +145,7 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
                 int y = 5;
                 if (this.Horizontal) {
                     y = 0; //16 
-                }
+                }                
                 for (int i = 0; i < conexiones.length; i++) {
                     this.ArregloConexiones[i] = new JToggleButton(conexiones[i].getNombres());
                     this.AgrupacionConexiones.add(this.ArregloConexiones[i]);

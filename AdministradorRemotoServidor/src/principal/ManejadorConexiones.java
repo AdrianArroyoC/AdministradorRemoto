@@ -86,7 +86,7 @@ public class ManejadorConexiones{
             ClienteTemp;
         
         boolean
-            actualizar = false;
+            actualizar;
        
         ArrayList<Conexion>
             CopiaConexiones;
@@ -95,6 +95,8 @@ public class ManejadorConexiones{
             Iterador;
         
         while(true){
+            actualizar = false;
+            
             /* Copiar conexiones actuales */
             CopiaConexiones = (ArrayList<Conexion>)this.Conexiones.clone();
         
@@ -147,14 +149,14 @@ public class ManejadorConexiones{
                 while(!NuevaConexion.isListo()){
                     continue;
                 }
-
+                
                 /* Conexión está lista */
                 if(this.getConexion(NuevaConexion.getDireccionIP()) == null){
                     /* Nuevo cliente se ha conectado. Añadir a la lista */
                     synchronized (this.Conexiones) {
                         this.Conexiones.add(NuevaConexion);
                     }
-
+                    
                     /* Llamar a la ventana para actualizar interfaz */
                     this.Ventana.agregarQuitarBotones();
                 }
@@ -162,7 +164,5 @@ public class ManejadorConexiones{
         } catch (Exception e) {
             System.out.println(this.getClass() + ": No pudo ser creada una nueva conexión: " + e.getMessage());
         }
-        
-        
     }
 }

@@ -9,6 +9,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketException;
 
@@ -112,10 +113,12 @@ public class EnviadorDatos implements Runnable{
             this.FlujoSalida.flush();
             
             /* Cerrar flujos */
-            /*this.FlujoEntrada.close()*/;
-            /*this.FlujoSalida.close()*/;
+            this.FlujoEntrada.close();
+            this.FlujoSalida.close();
         }catch(SocketException se){
             System.out.println("Conexión ha muerto");
+        }catch(IOException ioe){
+            System.out.println("Flujos han sido cerrados");
         }catch (Exception e) {
             System.out.println(this.getClass() + ": No fue posible continuar: " + e.getMessage());
         }

@@ -25,14 +25,6 @@ public class Conexion {
         EnviadorDatos
             Enviador;
     
-    private
-        DataInputStream
-            FlujoEntrada;
-    
-    private
-        DataOutputStream
-            FlujoSalida;
-    
     private volatile
         boolean
             vivo;
@@ -63,16 +55,6 @@ public class Conexion {
 
             /* Cliente se ha conectado. */
             System.out.println("Cliente conectado...");
-            
-            /* Crear el flujo de entrada */
-            this.FlujoEntrada = new DataInputStream(
-                Zocalo.getInputStream()
-            );
-            
-            /* Crear el flujo de salida */
-            this.FlujoSalida = new DataOutputStream(
-                Zocalo.getOutputStream()
-            );
 
             /* Crear el nuevo receptor de comandos */
             this.Cliente = new ReceptorComandos(
