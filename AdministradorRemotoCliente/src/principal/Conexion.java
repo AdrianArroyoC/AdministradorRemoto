@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -96,9 +97,10 @@ public class Conexion {
                 this.Ventana
             );
         } catch (Exception e){
-            System.out.println(this.getClass() + ": Hubo un error al establecer la conexión: " + e.getMessage());
-            
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null,  "Hubo un error al establecer la conexión:"+ e.getMessage());
+            //System.out.println(this.getClass() + ": Hubo un error al establecer la conexión: " 
+            return;
+            //e.printStackTrace();
         }
     }
 }

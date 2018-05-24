@@ -34,19 +34,19 @@ public class VentanaCliente extends JFrame {
         LabelNombre = new JLabel();
         LabelNombre.setText("Nombre:           ");
         //JTextField TextoNombre = new JTextField(15);
-        JTextField TextoNombre = new JTextField("ALUMNO",15);
+        JTextField TextoNombre = new JTextField("ALUMNO", 15);
         LabelApellidos = new JLabel();
         LabelApellidos.setText("Apellidos:         ");
         //JTextField TextoApellidos = new JTextField(15);
-        JTextField TextoApellidos = new JTextField("APELLIDO",15);
+        JTextField TextoApellidos = new JTextField("APELLIDO", 15);
         LabelCodigo = new JLabel();
         LabelCodigo.setText("Código:              ");
         //JTextField TextoCodigo = new JTextField(15);
-        JTextField TextoCodigo = new JTextField("I03030075",15);
+        JTextField TextoCodigo = new JTextField("I03030075", 15);
         LabelIpServidor = new JLabel();
         LabelIpServidor.setText("IP del servidor:");
-        //JTextField TextoIpServidor = new JTextField(15);
-        JTextField TextoIpServidor = new JTextField("192.168.1.80",15);
+        //JTextField TextoIpServidor = new JTextField("192.168.1.xx",15);
+        JTextField TextoIpServidor = new JTextField("192.168.1.80", 15);
         LabelPuerto = new JLabel();
         LabelPuerto.setText("Puerto del servidor: ");
         JTextField TextoPuerto = new JTextField("9090", 12);
@@ -70,32 +70,39 @@ public class VentanaCliente extends JFrame {
         add(LabelPuerto);
         add(TextoPuerto);
         add(ButtonIniciar);
-        
-        VentanaCliente YoMismo = this; /* Hecho para poder utilizarno en el ActionListener */
-        
+
+        VentanaCliente YoMismo = this;
+        /* Hecho para poder utilizarno en el ActionListener */
+
         ButtonIniciar.addActionListener(
                 new ActionListener() {
 
             public void actionPerformed(
                     ActionEvent e) {
-
+                if (TextoNombre.getText().isEmpty() || TextoApellidos.getText().isEmpty() || TextoCodigo.getText().isEmpty() || TextoIpServidor.getText().isEmpty() )   {
+                    JOptionPane.showMessageDialog(null, "no llenaste Todos los campos!");
+                    return;
+                }  
+                
+                
                 try {
+
                     //JOptionPane.showMessageDialog(null, "no llenaste los datos correctamente!");
-                    
-                    
                     new Conexion(
-                        TextoIpServidor.getText(),
-                        Integer.valueOf(TextoPuerto.getText()),
-                        TextoNombre.getText(),
-                        TextoApellidos.getText(),
-                        TextoCodigo.getText(),
-                        YoMismo
+                            TextoIpServidor.getText(),
+                            Integer.valueOf(TextoPuerto.getText()),
+                            TextoNombre.getText(),
+                            TextoApellidos.getText(),
+                            TextoCodigo.getText(),
+                            YoMismo
                     );
 
                 } catch (InputMismatchException ex) {
                     JOptionPane.showMessageDialog(null, ex.toString(), "Error al conectarse al server",
                             JOptionPane.ERROR_MESSAGE);
-                } catch (Exception exc){
+                } catch (Exception exc) {
+                    JOptionPane.showMessageDialog(null, exc.toString(), "Error al conectarse al server",
+                            JOptionPane.ERROR_MESSAGE);
                     System.out.println("Error general: " + exc.getMessage());
                 }
 
@@ -114,6 +121,6 @@ public class VentanaCliente extends JFrame {
     public void mostrarVentana(boolean mostrar) {
 
         this.setVisible(mostrar);
-        
+
     }
 }
