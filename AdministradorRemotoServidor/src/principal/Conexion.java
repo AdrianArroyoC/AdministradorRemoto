@@ -181,5 +181,16 @@ public class Conexion {
         }
         return this.Cliente;
     }
+    
+    /*
+        Método para matar el cliente
+    */
+    public void matar(){
+        /* Matar el hilo local */
+        this.vivo = false;
+        
+        /* Matar al cliente */
+        this.Cliente.matar();
+    }
 }
 

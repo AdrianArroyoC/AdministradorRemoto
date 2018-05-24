@@ -37,7 +37,7 @@ public class ManejadorConexiones{
         
         /* Inicializar los modificadores */
         this.Agregador = new AgregadorClientes(this);
-        /*this.Removedor = new RemovedorClientes(this);*/
+        this.Removedor = new RemovedorClientes(this);
     }
 
     /*
@@ -115,22 +115,27 @@ public class ManejadorConexiones{
 
         while(true){
             NuevaConexion = new Conexion(this.puerto);
-            
-            if(NuevaConexion.getDireccionIP() != null){
-                
-                /* Esperar a que esté listo */
-                while(!NuevaConexion.isListo()){
-                    continue;
-                }
 
-                /* Conexión está lista */
-                if(this.getConexion(NuevaConexion.getDireccionIP()) == null){                    
-                    /* Nuevo cliente se ha conectado. Añadir a la lista */
-                    this.Conexiones.add(NuevaConexion);
-                            
-                    /* Llamar a la ventana para actualizar interfaz */
-                    this.Ventana.agregarQuitarBotones();
-                }
+            System.out.println("CONEXION LISTA");
+            
+            /* Esperar a que esté listo */
+            while(!NuevaConexion.isListo()){
+                continue;
+            }
+
+            System.out.println("PREPARADO");
+
+            /* Conexión está lista */
+            if(this.getConexion(NuevaConexion.getDireccionIP()) == null){                    
+                /* Nuevo cliente se ha conectado. Añadir a la lista */
+                this.Conexiones.add(NuevaConexion);
+
+                System.out.println("Conexión agregada");
+
+                /* Llamar a la ventana para actualizar interfaz */
+                this.Ventana.agregarQuitarBotones();
+            }else{
+                System.out.println("CONEXION YA ESTABLECIDA");
             }
         }
     }

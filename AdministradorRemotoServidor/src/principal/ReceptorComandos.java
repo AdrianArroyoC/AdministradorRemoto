@@ -3,9 +3,7 @@ package principal;
 import java.awt.Robot;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Scanner;
 
 /**
  *
@@ -144,12 +142,6 @@ public class ReceptorComandos implements Runnable{
             this.Codigo = this.FlujoEntrada.readUTF();
             this.Nombres = this.FlujoEntrada.readUTF();
             this.Apellidos = this.FlujoEntrada.readUTF();
-            
-            /* Para debug */
-            System.out.println("IP: " + this.DireccionIP);
-            System.out.println("Código: " + this.Codigo);
-            System.out.println("Nombres: " + this.Nombres);
-            System.out.println("Apellidos: " + this.Apellidos);
             
             /* Datos poblados */
             this.listo = true;
