@@ -127,7 +127,9 @@ public class ReceptorComandos implements Runnable{
     @Override
     public void run() {
         int
-            comando;
+            comando,
+            dato1,
+            dato2;
 
         try {
             /* Establecer los flujos de entrada y salida desde la conexión */
@@ -157,29 +159,42 @@ public class ReceptorComandos implements Runnable{
                 
                 comando = this.FlujoEntrada.readInt();
 
-                /* Sólo ejecutar si no está bloqueado */
-                if(this.continuar){
-                    /* Ejecutar comando de acuerdo a identificación */
-                    switch(comando){
-                        case Comandos.MOUSE_PRESS:
-                            this.Automata.mousePress(this.FlujoEntrada.readInt());
-                            break;
-                        case Comandos.MOUSE_RELEASE:
-                            this.Automata.mouseRelease(this.FlujoEntrada.readInt());
-                            break;
-                        case Comandos.KEY_PRESS:
-                            this.Automata.keyPress(this.FlujoEntrada.readInt());
-                            break;
-                        case Comandos.KEY_RELEASE:
-                            this.Automata.keyRelease(this.FlujoEntrada.readInt());
-                            break;
-                        default:
+                /* Ejecutar comando de acuerdo a identificación */
+                switch(comando){
+                    case Comandos.MOUSE_PRESS:
+                        dato1 = this.FlujoEntrada.readInt();
+                        if(this.continuar){
+                            this.Automata.mousePress(dato1);
+                        }
+                        break;
+                    case Comandos.MOUSE_RELEASE:
+                        dato1 = this.FlujoEntrada.readInt();
+                        if(this.continuar){
+                            this.Automata.mouseRelease(dato1);
+                        }
+                        break;
+                    case Comandos.KEY_PRESS:
+                        dato1 = this.FlujoEntrada.readInt();
+                        if(this.continuar){
+                            this.Automata.keyPress(dato1);
+                        }
+                        break;
+                    case Comandos.KEY_RELEASE:
+                        dato1 = this.FlujoEntrada.readInt();
+                        if(this.continuar){
+                            this.Automata.keyRelease(dato1);
+                        }
+                        break;
+                    default:
+                        dato1 = this.FlujoEntrada.readInt();
+                        dato2 = this.FlujoEntrada.readInt();
+                        if(this.continuar){
                             this.Automata.mouseMove(
-                                FlujoEntrada.readInt(),
-                                FlujoEntrada.readInt()
+                                dato1,
+                                dato2
                             );
-                            break;
-                    }
+                        }
+                        break;
                 }
             }
 

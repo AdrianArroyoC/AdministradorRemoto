@@ -232,6 +232,7 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
                 }
             }
             //Metodo para realizar la conexion
+            this.CarteraClientes.desbloquear(conexion);
         }
     }
 

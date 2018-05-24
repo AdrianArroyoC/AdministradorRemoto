@@ -159,5 +159,14 @@ public class Conexion {
         /* Matar al cliente */
         this.Cliente.matar();
     }
+
+    /*
+        Método para bloquear o desbloquear al cliente
+    */
+    public void bloquear(boolean bloquear){
+        /* Bloquear enviadores y receptores */
+        this.Cliente.bloquear(bloquear);
+        this.Enviador.bloquear(bloquear);
+    }
 }
 

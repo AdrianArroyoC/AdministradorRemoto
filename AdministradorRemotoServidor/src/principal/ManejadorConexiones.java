@@ -165,4 +165,19 @@ public class ManejadorConexiones{
             System.out.println(this.getClass() + ": No pudo ser creada una nueva conexión: " + e.getMessage());
         }
     }
+
+    /*
+        Método para desbloquear una sola conexión al mandar el índice. Si el índice no existe, todas las conexiones serán bloqueadas
+    */
+    public void desbloquear(int indice){
+        for (int i = 0; i < this.Conexiones.size(); i++) {
+            if(indice == i){
+                System.out.println("DESBLOQUEANDO: " + i);
+            }
+
+            this.Conexiones.get(i).bloquear(
+                 ((indice == i)? false : true)
+            );
+        }
+    }
 }

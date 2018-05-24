@@ -62,7 +62,7 @@ public class EnviadorDatos implements Runnable{
         Método para detener el control ejercido por esta conexión.
     */
     public void bloquear(boolean continuar){
-        this.continuar = continuar;
+        this.continuar = !continuar;
     }
     
     /*
