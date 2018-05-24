@@ -1,5 +1,9 @@
 package principal;
 
+import com.sun.awt.AWTUtilities;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -10,12 +14,18 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import javax.swing.JFrame;
+import javax.swing.JRootPane;
 
 /**
  *
  * @author Carlos González <carlos85g at gmail.com>
  */
 public class EnviadorComandos implements Runnable, KeyListener, MouseMotionListener, MouseListener{       
+    
+    private Dimension Pantalla = Toolkit.getDefaultToolkit().getScreenSize();
+    private int LargoPantalla = (int) Pantalla.getHeight();
+    private int AnchoPantalla = (int) Pantalla.getWidth();
+    
     private
         JFrame
             Capturista;
@@ -54,24 +64,22 @@ public class EnviadorComandos implements Runnable, KeyListener, MouseMotionListe
         this.Zocalo = Zocalo;
         
         /* Establecer el tamaño de pantalla del servidor */
-        this.servidorAncho = ancho;
-        this.servidorAlto = alto;
+        this.servidorAncho = AnchoPantalla;
+        this.servidorAlto = LargoPantalla;
         
         /* Establecer la ventana para control bidireccional */
         this.Ventana = Ventana;
                 
         /* Asignar capturista */
         this.Capturista = new JFrame();
-        
-        this.Capturista.setSize(800, 600);
-        this.Capturista.setResizable(false);
-        /*
-        this.Capturista.setExtendedState(JFrame.MAXIMIZED_BOTH); 
         this.Capturista.setUndecorated(true);
-        */
+        this.Capturista.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
+        this.Capturista.setSize(servidorAncho, servidorAlto);
+        this.Capturista.setResizable(false);
         this.Capturista.setVisible(true);
         this.Capturista.setAlwaysOnTop(true);
-
+        
+        AWTUtilities.setWindowOpaque(this.Capturista, false);
         /* Para que capture los eventos del teclado */
         this.Capturista.setFocusable(true);
 
