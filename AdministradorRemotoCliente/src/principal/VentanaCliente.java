@@ -33,16 +33,20 @@ public class VentanaCliente extends JFrame {
     public VentanaCliente() {
         LabelNombre = new JLabel();
         LabelNombre.setText("Nombre:           ");
-        JTextField TextoNombre = new JTextField(15);
+        //JTextField TextoNombre = new JTextField(15);
+        JTextField TextoNombre = new JTextField("ALUMNO",15);
         LabelApellidos = new JLabel();
         LabelApellidos.setText("Apellidos:         ");
-        JTextField TextoApellidos = new JTextField(15);
+        //JTextField TextoApellidos = new JTextField(15);
+        JTextField TextoApellidos = new JTextField("APELLIDO",15);
         LabelCodigo = new JLabel();
         LabelCodigo.setText("Código:              ");
-        JTextField TextoCodigo = new JTextField(15);
+        //JTextField TextoCodigo = new JTextField(15);
+        JTextField TextoCodigo = new JTextField("I03030075",15);
         LabelIpServidor = new JLabel();
         LabelIpServidor.setText("IP del servidor:");
-        JTextField TextoIpServidor = new JTextField(15);
+        //JTextField TextoIpServidor = new JTextField(15);
+        JTextField TextoIpServidor = new JTextField("192.168.1.80",15);
         LabelPuerto = new JLabel();
         LabelPuerto.setText("Puerto del servidor: ");
         JTextField TextoPuerto = new JTextField("9090", 12);
