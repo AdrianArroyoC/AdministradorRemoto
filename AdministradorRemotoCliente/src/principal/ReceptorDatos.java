@@ -5,7 +5,6 @@
  */
 package principal;
 
-import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
@@ -21,6 +20,10 @@ public class ReceptorDatos implements Runnable{
             Hilo;
 
     private
+        Socket
+            Zocalo;
+    
+    private
         VentanaCliente
             Ventana;
     
@@ -32,10 +35,9 @@ public class ReceptorDatos implements Runnable{
         DataInputStream
             FlujoEntrada;
     
-    public ReceptorDatos(DataInputStream FlujoEntrada, DataOutputStream FlujoSalida, VentanaCliente Ventana) {
-        /* Establecer los flujos de entrada y salida desde la conexión */
-        this.FlujoEntrada = FlujoEntrada;
-        this.FlujoSalida = FlujoSalida;
+    public ReceptorDatos(Socket Zocalo, VentanaCliente Ventana) {
+        /* Pasar socket */
+        this.Zocalo = Zocalo;
         
         /* Asignar ventana para control bidireccional */
         this.Ventana = Ventana;
@@ -49,12 +51,23 @@ public class ReceptorDatos implements Runnable{
 
     @Override
     public void run() {
-        String
-            Respuesta;
+        int
+            respuesta;
         
         try{
-            while((Respuesta = this.FlujoEntrada.readLine()) != null){
-                if(Respuesta.equals("-1")){
+            /* Establecer los flujos de entrada y salida desde la conexión */
+            this.FlujoEntrada = new DataInputStream(
+                Zocalo.getInputStream()
+            );
+
+            this.FlujoSalida = new DataOutputStream(
+                Zocalo.getOutputStream()
+            );
+            
+            while(true){
+                respuesta = this.FlujoEntrada.readInt();
+                
+                if(respuesta == -1){
                     break;
                 }
             }
@@ -67,6 +80,8 @@ public class ReceptorDatos implements Runnable{
             this.Ventana.mostrarVentana(true);
         } catch(Exception e) {
             System.out.println(this.getClass() + ": No fue posible continuar: " + e.getMessage());
+            
+            e.printStackTrace();
         }
     }    
 }

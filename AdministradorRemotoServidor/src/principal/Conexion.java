@@ -77,15 +77,13 @@ public class Conexion {
 
             /* Crear el nuevo receptor de comandos */
             this.Cliente = new ReceptorComandos(
-                this.FlujoEntrada,
-                this.FlujoSalida,
+                Zocalo,
                 Automata
             );
             
             /* Crear el nuevo enviador de datos */
             this.Enviador = new EnviadorDatos(
-                this.FlujoEntrada,
-                this.FlujoSalida
+                Zocalo
             );
         }catch (Exception e){
             /* Error. Conexión muerta */
@@ -93,6 +91,8 @@ public class Conexion {
 
             /* Informar en consola */
             System.out.println("Hubo un error en la creación de conexión: " + e.getMessage());
+            
+            e.printStackTrace();
         }
     }
     

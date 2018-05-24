@@ -8,6 +8,7 @@ import java.awt.event.MouseMotionListener;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.Socket;
 import javax.swing.JFrame;
 
 /**
@@ -22,6 +23,10 @@ public class EnviadorComandos implements Runnable, KeyListener, MouseMotionListe
     private
         VentanaCliente
             Ventana;
+    
+    private
+        Socket
+            Zocalo;
     
     private
         DataOutputStream
@@ -44,10 +49,9 @@ public class EnviadorComandos implements Runnable, KeyListener, MouseMotionListe
             servidorAncho,
             servidorAlto;
         
-    public EnviadorComandos(DataInputStream FlujoEntrada, DataOutputStream FlujoSalida, VentanaCliente Pantalla, int ancho, int alto) {
-        /* Establecer los flujos de entrada y salida desde la conexión */
-        this.FlujoEntrada = FlujoEntrada;
-        this.FlujoSalida = FlujoSalida;
+    public EnviadorComandos(Socket Zocalo, VentanaCliente Pantalla, int ancho, int alto) {
+        /* Pasar socket */
+        this.Zocalo = Zocalo;
         
         /* Establecer el tamaño de pantalla del servidor */
         this.servidorAncho = ancho;
@@ -208,7 +212,16 @@ public class EnviadorComandos implements Runnable, KeyListener, MouseMotionListe
     @Override
     public void run() {
         /* Iniciar flujo de salida */
-        try{            
+        try{
+            /* Establecer los flujos de entrada y salida desde la conexión */
+            this.FlujoEntrada = new DataInputStream(
+                this.Zocalo.getInputStream()
+            );
+
+            this.FlujoSalida = new DataOutputStream(
+                this.Zocalo.getOutputStream()
+            );
+            
             while(this.vivo){
                 continue;
             }
@@ -222,6 +235,8 @@ public class EnviadorComandos implements Runnable, KeyListener, MouseMotionListe
             
         } catch(Exception e) {
             System.out.println(this.getClass() + ": No fue posible cerrar el flujo de salida: " + e.getMessage());
+            
+            e.printStackTrace();
         }
     }
 }

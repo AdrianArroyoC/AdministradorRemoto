@@ -9,6 +9,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.net.Socket;
 
 /**
  *
@@ -19,6 +20,10 @@ public class EnviadorDatos implements Runnable{
         Thread
             Hilo;
 
+    private
+        Socket
+            Zocalo;
+        
     private    
         DataInputStream
             FlujoEntrada;
@@ -31,10 +36,9 @@ public class EnviadorDatos implements Runnable{
         boolean
             vivo;
     
-    public EnviadorDatos(DataInputStream FlujoEntrada, DataOutputStream FlujoSalida) {
-        /* Establecer los flujos de entrada y salida desde la conexión */
-        this.FlujoEntrada = FlujoEntrada;
-        this.FlujoSalida = FlujoSalida;
+    public EnviadorDatos(Socket Zocalo) {
+        /* Pasar socket */
+        this.Zocalo = Zocalo;
         
         /* Crear nuevo hilo */
         this.Hilo = new Thread(this);
@@ -60,6 +64,15 @@ public class EnviadorDatos implements Runnable{
             alto = (int)Pantalla.getHeight();
         
         try {
+            /* Establecer los flujos de entrada y salida desde la conexión */
+            this.FlujoEntrada = new DataInputStream(
+                this.Zocalo.getInputStream()
+            );
+
+            this.FlujoSalida = new DataOutputStream(
+                this.Zocalo.getOutputStream()
+            );
+            
             /* Enviar el tamaño de pantalla */
             this.FlujoSalida.writeInt(ancho);            
             this.FlujoSalida.writeInt(alto);

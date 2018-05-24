@@ -17,6 +17,10 @@ public class ReceptorComandos implements Runnable{
             Hilo;
     
     private
+        Socket
+            Zocalo;
+    
+    private
         Robot
             Automata;
     
@@ -40,10 +44,9 @@ public class ReceptorComandos implements Runnable{
             continuar, /* Bandera para especificar si es necesario detener control */
             vivo; /* Bandera para mantener el hilo vivo. Ponerlo en falso acabará con la sesión del usuario */
 
-    public ReceptorComandos(DataInputStream FlujoEntrada, DataOutputStream FlujoSalida, Robot Automata) {
-        /* Establecer los flujos de entrada y salida desde la conexión */
-        this.FlujoEntrada = FlujoEntrada;
-        this.FlujoSalida = FlujoSalida;
+    public ReceptorComandos(Socket Zocalo, Robot Automata) {
+        /* Pasar socket */
+        this.Zocalo = Zocalo;
         
         /* Obtener el robot para uso */
         this.Automata = Automata;
@@ -119,6 +122,15 @@ public class ReceptorComandos implements Runnable{
             comando;
 
         try {
+            /* Establecer los flujos de entrada y salida desde la conexión */
+            this.FlujoEntrada = new DataInputStream(
+                this.Zocalo.getInputStream()
+            );
+
+            this.FlujoSalida = new DataOutputStream(
+                this.Zocalo.getOutputStream()
+            );
+            
             /* Obtener los datos primero */
             this.DireccionIP = FlujoEntrada.readUTF();
             this.Codigo = FlujoEntrada.readUTF();
@@ -170,6 +182,8 @@ public class ReceptorComandos implements Runnable{
             FlujoSalida.close();
         }catch(Exception e){
             System.out.println("Error al procesar comando recibido: " + e.getMessage());
+            
+            e.printStackTrace();
         }
         
         /* Cerrar hilo */

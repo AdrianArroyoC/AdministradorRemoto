@@ -80,17 +80,19 @@ public class Conexion {
             /* La segunda respuesta es el alto */
             this.servidorAlto = Integer.valueOf(respuesta);
 
+            /* Cerrar flujos locales */
+            FlujoEntrada.close();
+            FlujoSalida.close();
+            
             /* Crear un nuevo capturador de comandos que trabaje las peticiones */
             this.EspacioPantalla = new EnviadorComandos(
-                FlujoEntrada,
-                FlujoSalida,
+                this.Zocalo,
                 this.Ventana,
                 this.servidorAncho,
                 this.servidorAlto
             );
             this.RespuestaServidor = new ReceptorDatos(
-                FlujoEntrada,
-                FlujoSalida,
+                this.Zocalo,
                 this.Ventana
             );
         } catch (Exception e){
