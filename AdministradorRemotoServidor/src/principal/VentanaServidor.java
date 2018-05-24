@@ -270,7 +270,12 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
             ocultarDesocultar(true);
         }
         else if ((e.getKeyCode() == KeyEvent.VK_Q) && ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0)) {
-            
+            for (int i = 0; i < this.ArregloConexiones.length; i++) {
+                if (this.ArregloConexiones[i].isSelected()) {
+                    String cadena = CarteraClientes.getConexiones()[i].getDireccionIP();
+                    CarteraClientes.getConexion(cadena).matar();
+                }
+            }
         }
     }
 
