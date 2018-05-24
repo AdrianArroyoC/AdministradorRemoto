@@ -60,6 +60,7 @@ public class EnviadorComandos implements Runnable, KeyListener, MouseMotionListe
         this.Capturista = new JFrame();
         
         this.Capturista.setSize(800, 600);
+        this.Capturista.setResizable(false);
         /*
         this.Capturista.setExtendedState(JFrame.MAXIMIZED_BOTH); 
         this.Capturista.setUndecorated(true);
@@ -106,8 +107,8 @@ public class EnviadorComandos implements Runnable, KeyListener, MouseMotionListe
     @Override
     public void keyPressed(KeyEvent e) {
         try {
-            this.FlujoSalida.write(Comandos.KEY_PRESS);       
-            this.FlujoSalida.write(e.getKeyCode());
+            this.FlujoSalida.writeInt(Comandos.KEY_PRESS);       
+            this.FlujoSalida.writeInt(e.getKeyCode());
             this.FlujoSalida.flush();
         } catch (IOException ioe){
             System.out.println("Error en comunicación: Terminando ejecución");
@@ -120,8 +121,8 @@ public class EnviadorComandos implements Runnable, KeyListener, MouseMotionListe
     @Override
     public void keyReleased(KeyEvent e) {
         try {
-            this.FlujoSalida.write(Comandos.KEY_RELEASE);       
-            this.FlujoSalida.write(e.getKeyCode());
+            this.FlujoSalida.writeInt(Comandos.KEY_RELEASE);       
+            this.FlujoSalida.writeInt(e.getKeyCode());
             this.FlujoSalida.flush();
         } catch (IOException ioe){
             System.out.println("Error en comunicación: Terminando ejecución");
@@ -144,9 +145,9 @@ public class EnviadorComandos implements Runnable, KeyListener, MouseMotionListe
             );
 
         try {
-            this.FlujoSalida.write(Comandos.MOUSE_MOVE);       
-            this.FlujoSalida.write(nuevasCoordenadas[0]);
-            this.FlujoSalida.write(nuevasCoordenadas[1]);
+            this.FlujoSalida.writeInt(Comandos.MOUSE_MOVE);       
+            this.FlujoSalida.writeInt(nuevasCoordenadas[0]);
+            this.FlujoSalida.writeInt(nuevasCoordenadas[1]);
             this.FlujoSalida.flush();
         } catch (IOException ioe){
             System.out.println("Error en comunicación: Terminando ejecución");
@@ -167,8 +168,8 @@ public class EnviadorComandos implements Runnable, KeyListener, MouseMotionListe
             xBoton = (boton == 3)? 4 : 16;
         
         try {
-            this.FlujoSalida.write(Comandos.MOUSE_PRESS);       
-            this.FlujoSalida.write(xBoton);
+            this.FlujoSalida.writeInt(Comandos.MOUSE_PRESS);       
+            this.FlujoSalida.writeInt(xBoton);
             this.FlujoSalida.flush();
         } catch (IOException ioe){
             System.out.println("Error en comunicación: Terminando ejecución");
@@ -185,8 +186,8 @@ public class EnviadorComandos implements Runnable, KeyListener, MouseMotionListe
             xBoton = (boton == 3)? 4 : 16;
 
         try {
-            this.FlujoSalida.write(Comandos.MOUSE_RELEASE);       
-            this.FlujoSalida.write(xBoton);
+            this.FlujoSalida.writeInt(Comandos.MOUSE_RELEASE);       
+            this.FlujoSalida.writeInt(xBoton);
             this.FlujoSalida.flush();
         } catch (IOException ioe){
             System.out.println("Error en comunicación: Terminando ejecución");

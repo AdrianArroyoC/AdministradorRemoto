@@ -3,7 +3,6 @@ package principal;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.Socket;
 
@@ -72,16 +71,11 @@ public class Conexion {
             
             /* Recibir información del servidor */
             respuesta = FlujoEntrada.readInt();
-                
-            System.out.println("Respuesta 1: " + respuesta);
 
             /* La primera respuesta es el ancho */
             this.servidorAncho = Integer.valueOf(respuesta);
 
-            /* Volver a solicitar */
-            respuesta = FlujoEntrada.readInt();
-
-            System.out.println("Respuesta 2: " + respuesta);
+            respuesta = FlujoEntrada.readInt();       
             
             /* La segunda respuesta es el alto */
             this.servidorAlto = Integer.valueOf(respuesta);
@@ -99,11 +93,6 @@ public class Conexion {
                 FlujoSalida,
                 this.Ventana
             );
-        } catch (IOException ex){
-        
-               System.out.println("Error de entrada y salida:");
-            
-               ex.printStackTrace();
         } catch (Exception e){
             System.out.println(this.getClass() + ": Hubo un error al establecer la conexión: " + e.getMessage());
             

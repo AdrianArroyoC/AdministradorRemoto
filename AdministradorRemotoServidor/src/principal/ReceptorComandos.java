@@ -123,7 +123,13 @@ public class ReceptorComandos implements Runnable{
             this.DireccionIP = FlujoEntrada.readUTF();
             this.Codigo = FlujoEntrada.readUTF();
             this.Nombres = FlujoEntrada.readUTF();
-            this.Apellidos = FlujoEntrada.readUTF();  
+            this.Apellidos = FlujoEntrada.readUTF();
+            
+            /* Para debug */
+            System.out.println("IP: " + this.DireccionIP);
+            System.out.println("Código: " + this.Codigo);
+            System.out.println("Nombres: " + this.Nombres);
+            System.out.println("Apellidos: " + this.Apellidos);
 
             /* Hasta que la conexión sea detenida */
             while(this.vivo){
