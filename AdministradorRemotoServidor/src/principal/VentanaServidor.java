@@ -269,6 +269,9 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
         if ((e.getKeyCode() == KeyEvent.VK_M) && ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0)) {
             ocultarDesocultar(true);
         }
+        else if ((e.getKeyCode() == KeyEvent.VK_Q) && ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0)) {
+            
+        }
     }
 
     @Override
