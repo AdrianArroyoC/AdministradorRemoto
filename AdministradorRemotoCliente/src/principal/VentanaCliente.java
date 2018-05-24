@@ -45,7 +45,7 @@ public class VentanaCliente extends JFrame {
         JTextField TextoCodigo = new JTextField("I03030075", 15);
         LabelIpServidor = new JLabel();
         LabelIpServidor.setText("IP del servidor:");
-        //JTextField TextoIpServidor = new JTextField(15);
+        //JTextField TextoIpServidor = new JTextField("192.168.1.xx",15);
         JTextField TextoIpServidor = new JTextField("192.168.1.80", 15);
         LabelPuerto = new JLabel();
         LabelPuerto.setText("Puerto del servidor: ");
@@ -82,9 +82,7 @@ public class VentanaCliente extends JFrame {
                 if (TextoNombre.getText().isEmpty() || TextoApellidos.getText().isEmpty() || TextoCodigo.getText().isEmpty() || TextoIpServidor.getText().isEmpty() )   {
                     JOptionPane.showMessageDialog(null, "no llenaste Todos los campos!");
                     return;
-                }  else  {
-                    JOptionPane.showMessageDialog(null, "no llenaste el campo Apellido!");
-                }
+                }  
                 
                 
                 try {
@@ -103,7 +101,9 @@ public class VentanaCliente extends JFrame {
                     JOptionPane.showMessageDialog(null, ex.toString(), "Error al conectarse al server",
                             JOptionPane.ERROR_MESSAGE);
                 } catch (Exception exc) {
-                    System.out.println("Error general: " + exc.getMessage());
+                    JOptionPane.showMessageDialog(null, exc.toString(), "Error al conectarse al server",
+                            JOptionPane.ERROR_MESSAGE);
+                   // System.out.println("Error general: " + exc.getMessage());
                 }
 
             }
