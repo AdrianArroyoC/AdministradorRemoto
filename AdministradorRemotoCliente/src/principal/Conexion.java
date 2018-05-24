@@ -95,8 +95,8 @@ public class Conexion {
             );
         } catch (Exception e){
             System.out.println(this.getClass() + ": Hubo un error al establecer la conexión: " + e.getMessage());
-            
-            e.printStackTrace();
+            return;
+            //e.printStackTrace();
         }
     }
 }
