@@ -73,8 +73,8 @@ public class ReceptorDatos implements Runnable{
             }
             
             /* Servidor cerró conexión. Cerrar flujos */
-            this.FlujoEntrada.close();
-            this.FlujoSalida.close();
+            /*this.FlujoEntrada.close()*/;
+            /*this.FlujoSalida.close()*/;
             
             /* Mostrar la ventana */
             this.Ventana.mostrarVentana(true);

@@ -227,8 +227,8 @@ public class EnviadorComandos implements Runnable, KeyListener, MouseMotionListe
             }
             
             /* Cerrar flujos */
-            this.FlujoEntrada.close();
-            this.FlujoSalida.close();
+            /*this.FlujoEntrada.close()*/;
+            /*this.FlujoSalida.close()*/;
             
             /* Mostrar ventana */
             this.Ventana.mostrarVentana(true);

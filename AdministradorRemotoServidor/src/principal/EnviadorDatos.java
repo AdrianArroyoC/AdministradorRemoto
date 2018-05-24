@@ -87,8 +87,8 @@ public class EnviadorDatos implements Runnable{
             this.FlujoSalida.flush();
             
             /* Cerrar flujos */
-            this.FlujoEntrada.close();
-            this.FlujoSalida.close();
+            /*this.FlujoEntrada.close()*/;
+            /*this.FlujoSalida.close()*/;
         } catch (Exception e) {
             System.out.println(this.getClass() + ": No fue posible continuar: " + e.getMessage());
         }

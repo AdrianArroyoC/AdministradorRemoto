@@ -152,16 +152,16 @@ public class ReceptorComandos implements Runnable{
                     /* Ejecutar comando de acuerdo a identificación */
                     switch(comando){
                         case Comandos.MOUSE_PRESS:
-                            this.Automata.mousePress(FlujoEntrada.readInt());
+                            this.Automata.mousePress(this.FlujoEntrada.readInt());
                             break;
                         case Comandos.MOUSE_RELEASE:
-                            this.Automata.mouseRelease(FlujoEntrada.readInt());
+                            this.Automata.mouseRelease(this.FlujoEntrada.readInt());
                             break;
                         case Comandos.KEY_PRESS:
-                            this.Automata.keyPress(FlujoEntrada.readInt());
+                            this.Automata.keyPress(this.FlujoEntrada.readInt());
                             break;
                         case Comandos.KEY_RELEASE:
-                            this.Automata.keyRelease(FlujoEntrada.readInt());
+                            this.Automata.keyRelease(this.FlujoEntrada.readInt());
                             break;
                         default:
                             this.Automata.mouseMove(
@@ -178,8 +178,8 @@ public class ReceptorComandos implements Runnable{
             FlujoSalida.flush();
 
             /* Cliente ya no puede volver a ejecutar. Matar los flujos de entrada y salida */
-            FlujoEntrada.close();
-            FlujoSalida.close();
+            /*this.FlujoEntrada.close();*/;
+            /*this.FlujoSalida.close()*/;
         }catch(Exception e){
             System.out.println("Error al procesar comando recibido: " + e.getMessage());
             

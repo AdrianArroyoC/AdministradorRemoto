@@ -32,14 +32,16 @@ public class Conexion {
         int
             servidorAncho,
             servidorAlto;
-                
-    public Conexion(String DireccionIPServidor, int puerto, String Nombre, String Apellidos, String Codigo, VentanaCliente Ventana){
+    
+    private
         DataOutputStream
             FlujoSalida;
-    
+            
+    private
         DataInputStream
             FlujoEntrada;
-        
+                
+    public Conexion(String DireccionIPServidor, int puerto, String Nombre, String Apellidos, String Codigo, VentanaCliente Ventana){       
         int
             respuesta;
         
@@ -53,37 +55,37 @@ public class Conexion {
             System.out.println("Conectado con el servidor...");
             
             /* Establecer el flujo de salida de datos hacia el servidor */
-            FlujoSalida = new DataOutputStream(
+            this.FlujoSalida = new DataOutputStream(
                 this.Zocalo.getOutputStream()
             );
             
-            FlujoEntrada = new DataInputStream(
+            this.FlujoEntrada = new DataInputStream(
                 this.Zocalo.getInputStream()
             );
             
             /* Enviar información del cliente */
-            FlujoSalida.writeUTF(
+            this.FlujoSalida.writeUTF(
                 /* IP local */
                 InetAddress.getLocalHost().getHostAddress()
             );
-            FlujoSalida.writeUTF(Codigo);
-            FlujoSalida.writeUTF(Nombre);
-            FlujoSalida.writeUTF(Apellidos);
+            this.FlujoSalida.writeUTF(Codigo);
+            this.FlujoSalida.writeUTF(Nombre);
+            this.FlujoSalida.writeUTF(Apellidos);
             
             /* Recibir información del servidor */
-            respuesta = FlujoEntrada.readInt();
+            respuesta = this.FlujoEntrada.readInt();
 
             /* La primera respuesta es el ancho */
             this.servidorAncho = Integer.valueOf(respuesta);
 
-            respuesta = FlujoEntrada.readInt();       
+            respuesta = this.FlujoEntrada.readInt();       
             
             /* La segunda respuesta es el alto */
             this.servidorAlto = Integer.valueOf(respuesta);
 
             /* Cerrar flujos locales */
-            FlujoEntrada.close();
-            FlujoSalida.close();
+            /*this.FlujoEntrada.close()*/;
+            /*this.FlujoSalida.close()*/;
             
             /* Crear un nuevo capturador de comandos que trabaje las peticiones */
             this.EspacioPantalla = new EnviadorComandos(
