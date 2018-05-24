@@ -2,6 +2,7 @@ package principal;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -39,8 +40,8 @@ public class Conexion {
         DataInputStream
             FlujoEntrada;
         
-        String
-            Respuesta;
+        int
+            respuesta;
         
         try{
             /* Establecer el socket */
@@ -68,41 +69,41 @@ public class Conexion {
             FlujoSalida.writeUTF(Codigo);
             FlujoSalida.writeUTF(Nombre);
             FlujoSalida.writeUTF(Apellidos);
-
-            System.out.println("Recibido");
             
             /* Recibir información del servidor */
-            if((Respuesta = FlujoEntrada.readUTF()) != null){
-                /* La primera respuesta es el ancho */
-                this.servidorAncho = Integer.valueOf(Respuesta);
+            respuesta = FlujoEntrada.readInt();
                 
-                /* Volver a solicitar */
-                Respuesta = FlujoEntrada.readUTF();
+            System.out.println("Respuesta 1: " + respuesta);
 
-                /* La segunda respuesta es el alto */
-                this.servidorAlto = Integer.valueOf(Respuesta);
-                
-                /* Crear un nuevo capturador de comandos que trabaje las peticiones */
-                this.EspacioPantalla = new EnviadorComandos(
-                    FlujoEntrada,
-                    FlujoSalida,
-                    this.Ventana,
-                    this.servidorAncho,
-                    this.servidorAlto
-                );
-                this.RespuestaServidor = new ReceptorDatos(
-                    FlujoEntrada,
-                    FlujoSalida,
-                    this.Ventana
-                );
-            }else{
-                /* Respuesta no válida. Cerrar flujos */
-                FlujoEntrada.close();
-                FlujoSalida.close();
-                
-                /* Mostrar ventana de cliente */
-                this.Ventana.mostrarVentana(true);
-            }
+            /* La primera respuesta es el ancho */
+            this.servidorAncho = Integer.valueOf(respuesta);
+
+            /* Volver a solicitar */
+            respuesta = FlujoEntrada.readInt();
+
+            System.out.println("Respuesta 2: " + respuesta);
+            
+            /* La segunda respuesta es el alto */
+            this.servidorAlto = Integer.valueOf(respuesta);
+
+            /* Crear un nuevo capturador de comandos que trabaje las peticiones */
+            this.EspacioPantalla = new EnviadorComandos(
+                FlujoEntrada,
+                FlujoSalida,
+                this.Ventana,
+                this.servidorAncho,
+                this.servidorAlto
+            );
+            this.RespuestaServidor = new ReceptorDatos(
+                FlujoEntrada,
+                FlujoSalida,
+                this.Ventana
+            );
+        } catch (IOException ex){
+        
+               System.out.println("Error de entrada y salida:");
+            
+               ex.printStackTrace();
         } catch (Exception e){
             System.out.println(this.getClass() + ": Hubo un error al establecer la conexión: " + e.getMessage());
             

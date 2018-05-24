@@ -156,7 +156,7 @@ public class ReceptorComandos implements Runnable{
             }
 
             /* Mandar información al flujo de salida sobre la desconexión del usuario */
-            FlujoSalida.write(-1);
+            FlujoSalida.writeInt(-1);
             FlujoSalida.flush();
 
             /* Cliente ya no puede volver a ejecutar. Matar los flujos de entrada y salida */

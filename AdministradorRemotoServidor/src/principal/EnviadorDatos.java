@@ -61,16 +61,16 @@ public class EnviadorDatos implements Runnable{
         
         try {
             /* Enviar el tamaño de pantalla */
-            this.FlujoSalida.write(ancho);
-            this.FlujoSalida.write(alto);
+            this.FlujoSalida.writeInt(ancho);            
+            this.FlujoSalida.writeInt(alto);
             this.FlujoSalida.flush();
-            
+
             while(this.vivo){
                 continue;
             }
             
             /* Hilo debe morir. Informar a cliente */
-            this.FlujoSalida.write(-1);
+            this.FlujoSalida.writeInt(-1);
             this.FlujoSalida.flush();
             
             /* Cerrar flujos */
