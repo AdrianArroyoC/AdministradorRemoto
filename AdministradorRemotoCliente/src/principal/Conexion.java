@@ -69,13 +69,15 @@ public class Conexion {
             FlujoSalida.writeUTF(Nombre);
             FlujoSalida.writeUTF(Apellidos);
 
+            System.out.println("Recibido");
+            
             /* Recibir información del servidor */
-            if((Respuesta = FlujoEntrada.readLine()) != null){
+            if((Respuesta = FlujoEntrada.readUTF()) != null){
                 /* La primera respuesta es el ancho */
                 this.servidorAncho = Integer.valueOf(Respuesta);
                 
                 /* Volver a solicitar */
-                Respuesta = FlujoEntrada.readLine();
+                Respuesta = FlujoEntrada.readUTF();
 
                 /* La segunda respuesta es el alto */
                 this.servidorAlto = Integer.valueOf(Respuesta);
@@ -103,6 +105,8 @@ public class Conexion {
             }
         } catch (Exception e){
             System.out.println(this.getClass() + ": Hubo un error al establecer la conexión: " + e.getMessage());
+            
+            e.printStackTrace();
         }
     }
 }
