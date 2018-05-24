@@ -41,7 +41,7 @@ public class EnviadorDatos implements Runnable{
         this.Zocalo = Zocalo;
         
         /* Crear nuevo hilo */
-        this.Hilo = new Thread(this);
+        this.Hilo = new Thread(this, "EnviadorDatos");
         
         /* Iniciar proceso */
         this.Hilo.start();
@@ -53,7 +53,7 @@ public class EnviadorDatos implements Runnable{
     public boolean isVivo(){
         return this.vivo;
     }
-    
+
     @Override
     public void run() {
         Dimension

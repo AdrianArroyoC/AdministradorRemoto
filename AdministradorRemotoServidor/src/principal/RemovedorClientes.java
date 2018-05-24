@@ -23,7 +23,7 @@ private
         this.CarteraClientes = CarteraClientes;
         
         /* Crear un nuevo hilo */
-        this.Hilo = new Thread(this);
+        this.Hilo = new Thread(this, "RemovedorClientes");
         
         /* Iniciar hilo */
         this.Hilo.start();

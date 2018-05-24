@@ -41,6 +41,7 @@ public class ReceptorComandos implements Runnable{
     
     private
         boolean
+            listo = false,
             continuar, /* Bandera para especificar si es necesario detener control */
             vivo; /* Bandera para mantener el hilo vivo. Ponerlo en falso acabará con la sesión del usuario */
 
@@ -56,7 +57,7 @@ public class ReceptorComandos implements Runnable{
         this.vivo = true;
         
         /* Iniciar hilo */
-        this.Hilo = new Thread(this);
+        this.Hilo = new Thread(this, "ReceptorComandos");
         this.Hilo.start();
     }
     
@@ -116,6 +117,13 @@ public class ReceptorComandos implements Runnable{
         return this.vivo;
     }
     
+    /*
+        Método para verificar que la clase está lista
+    */
+    public boolean isListo(){
+        return this.listo;
+    }
+    
     @Override
     public void run() {
         int
@@ -132,16 +140,19 @@ public class ReceptorComandos implements Runnable{
             );
             
             /* Obtener los datos primero */
-            this.DireccionIP = FlujoEntrada.readUTF();
-            this.Codigo = FlujoEntrada.readUTF();
-            this.Nombres = FlujoEntrada.readUTF();
-            this.Apellidos = FlujoEntrada.readUTF();
+            this.DireccionIP = this.FlujoEntrada.readUTF();
+            this.Codigo = this.FlujoEntrada.readUTF();
+            this.Nombres = this.FlujoEntrada.readUTF();
+            this.Apellidos = this.FlujoEntrada.readUTF();
             
             /* Para debug */
             System.out.println("IP: " + this.DireccionIP);
             System.out.println("Código: " + this.Codigo);
             System.out.println("Nombres: " + this.Nombres);
             System.out.println("Apellidos: " + this.Apellidos);
+            
+            /* Datos poblados */
+            this.listo = true;
 
             /* Hasta que la conexión sea detenida */
             while(this.vivo){
@@ -174,8 +185,8 @@ public class ReceptorComandos implements Runnable{
             }
 
             /* Mandar información al flujo de salida sobre la desconexión del usuario */
-            FlujoSalida.writeInt(-1);
-            FlujoSalida.flush();
+            this.FlujoSalida.writeInt(-1);
+            this.FlujoSalida.flush();
 
             /* Cliente ya no puede volver a ejecutar. Matar los flujos de entrada y salida */
             /*this.FlujoEntrada.close();*/;

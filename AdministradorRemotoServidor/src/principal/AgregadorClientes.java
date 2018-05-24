@@ -22,9 +22,9 @@ public class AgregadorClientes implements Runnable{
     public AgregadorClientes(ManejadorConexiones CarteraClientes) {
         /* Trabajar con el manejador */
         this.CarteraClientes = CarteraClientes;
-        
+
         /* Crear un nuevo hilo */
-        this.Hilo = new Thread(this);
+        this.Hilo = new Thread(this, "AgregadorClientes");
         
         /* Iniciar hilo */
         this.Hilo.start();
