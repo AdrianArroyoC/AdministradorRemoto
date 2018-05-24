@@ -79,7 +79,6 @@ public class EnviadorComandos implements Runnable, KeyListener, MouseMotionListe
         this.Capturista.setVisible(true);
         this.Capturista.setAlwaysOnTop(true);
         
-        AWTUtilities.setWindowOpaque(this.Capturista, false);
         /* Para que capture los eventos del teclado */
         this.Capturista.setFocusable(true);
 
