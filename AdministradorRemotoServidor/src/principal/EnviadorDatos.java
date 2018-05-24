@@ -36,7 +36,8 @@ public class EnviadorDatos implements Runnable{
     private volatile 
         boolean
             vivo = true,
-            listo = false;
+            listo = false,
+            continuar = true; /* Bandera para especificar si es necesario detener control */
     
     public EnviadorDatos(Socket Zocalo) {
         /* Pasar socket */
@@ -54,6 +55,13 @@ public class EnviadorDatos implements Runnable{
     */
     public boolean isVivo(){
         return this.vivo;
+    }
+    
+    /*
+        Método para detener el control ejercido por esta conexión.
+    */
+    public void bloquear(boolean continuar){
+        this.continuar = continuar;
     }
     
     /*
@@ -90,8 +98,13 @@ public class EnviadorDatos implements Runnable{
             /* Datos enviados. Clase lista */
             this.listo = true;
             
+            /* Iniciar como bloqueada */
+            this.bloquear(true);
+            
             while(this.vivo){
-                continue;
+                if(this.continuar){
+                    continue;
+                }
             }
             
             /* Hilo debe morir. Informar a cliente */

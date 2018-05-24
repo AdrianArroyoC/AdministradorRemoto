@@ -99,7 +99,7 @@ public class ReceptorComandos implements Runnable{
         Método para detener el control ejercido por esta conexión.
     */
     public void bloquear(boolean continuar){
-        this.continuar = continuar;
+        this.continuar = !continuar;
     }
 
     /*
@@ -146,7 +146,10 @@ public class ReceptorComandos implements Runnable{
             
             /* Datos poblados */
             this.listo = true;
-
+            
+            /* Iniciar como bloqueada */
+            this.bloquear(true);
+            
             /* Hasta que la conexión sea detenida */
             while(this.vivo){
                 /* Si está especificado que el usuario está bloqueado, esperar */
