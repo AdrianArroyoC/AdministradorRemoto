@@ -29,6 +29,8 @@ public class VentanaCliente extends JFrame {
     JLabel LabelIpServidor;
     JLabel LabelStatus;
     JLabel LabelPuerto;
+    
+    int puerto = 9090;
 
     public VentanaCliente() {
         LabelNombre = new JLabel();
@@ -48,8 +50,8 @@ public class VentanaCliente extends JFrame {
         //JTextField TextoIpServidor = new JTextField("192.168.1.xx",15);
         JTextField TextoIpServidor = new JTextField("192.168.1.80", 15);
         LabelPuerto = new JLabel();
-        LabelPuerto.setText("Puerto del servidor: ");
-        JTextField TextoPuerto = new JTextField("9090", 12);
+        /*LabelPuerto.setText("Puerto del servidor: ");
+        JTextField TextoPuerto = new JTextField(String.valueOf(this.puerto), 12);*/
         LabelStatus = new JLabel();
         LabelStatus.setText("Estado: Pendiente del servidor");
 
@@ -67,8 +69,8 @@ public class VentanaCliente extends JFrame {
         add(TextoCodigo);
         add(LabelIpServidor);
         add(TextoIpServidor);
-        add(LabelPuerto);
-        add(TextoPuerto);
+        /*add(LabelPuerto);
+        add(TextoPuerto);*/
         add(ButtonIniciar);
 
         VentanaCliente YoMismo = this;
@@ -90,7 +92,7 @@ public class VentanaCliente extends JFrame {
                     //JOptionPane.showMessageDialog(null, "no llenaste los datos correctamente!");
                     new Conexion(
                             TextoIpServidor.getText(),
-                            Integer.valueOf(TextoPuerto.getText()),
+                            /*Integer.valueOf(TextoPuerto.getText())*/YoMismo.puerto,
                             TextoNombre.getText(),
                             TextoApellidos.getText(),
                             TextoCodigo.getText(),

@@ -148,6 +148,8 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
                 }                
                 for (int i = 0; i < conexiones.length; i++) {
                     this.ArregloConexiones[i] = new JToggleButton(conexiones[i].getNombres());
+                    /* Añadir escuchador en el botón */
+                    this.ArregloConexiones[i].addMouseListener(this);
                     this.AgrupacionConexiones.add(this.ArregloConexiones[i]);
                     System.out.println(conexiones[i].getNombre());
                     this.ArregloConexiones[i].setToolTipText(conexiones[i].getNombre());
@@ -222,7 +224,7 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
         else if (e.getSource() == this.BtnIzquierda) {
             this.establecerUbicacion(3);
         }
-        else if (this.ArregloConexiones.length != 0) {
+        else if (this.ArregloConexiones.length != 0) {           
             int conexion = -1;
             for (int i = 0; i < this.ArregloConexiones.length; i++) {
                 this.ArregloConexiones[i].setSelected(false);
