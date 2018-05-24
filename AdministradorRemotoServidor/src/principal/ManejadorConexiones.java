@@ -116,12 +116,11 @@ public class ManejadorConexiones{
         while(true){
             NuevaConexion = new Conexion(puerto);
 
-            if(this.getConexion(NuevaConexion.getDireccionIP()) != null){
+            if(this.getConexion(NuevaConexion.getDireccionIP()) == null){
                 /* Nuevo cliente se ha conectado. Añadir a la lista */
                 this.Conexiones.add(NuevaConexion);
-
                 /* Llamar a la ventana para actualizar interfaz */
-                this.Ventana.agregarQuitarBotones();
+                this.Ventana.agregarQuitarBotones(); 
             }
         }
     }
