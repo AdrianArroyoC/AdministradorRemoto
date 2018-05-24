@@ -34,6 +34,11 @@ public class ReceptorDatos implements Runnable{
         DataInputStream
             FlujoEntrada;
     
+    private volatile
+        boolean
+            vivo,
+            listo;
+    
     public ReceptorDatos(Socket Zocalo, VentanaCliente Ventana) {
         /* Pasar socket */
         this.Zocalo = Zocalo;
@@ -47,11 +52,21 @@ public class ReceptorDatos implements Runnable{
         /* Iniciar proceso */
         this.Hilo.start();
     }
+    
+    /*
+        Método para identificar que la clase está lista
+    */
+    public boolean isListo(){
+        return this.listo;
+    }
 
     @Override
     public void run() {
         int
             respuesta;
+        
+        /* Iniciar función */
+        this.vivo = true;
         
         try{
             /* Establecer los flujos de entrada y salida desde la conexión */
@@ -63,7 +78,10 @@ public class ReceptorDatos implements Runnable{
                 Zocalo.getOutputStream()
             );
             
-            while(true){
+            /* Hilo preparado */
+            this.listo = true;
+            
+            while(this.vivo){
                 respuesta = this.FlujoEntrada.readInt();
                 
                 if(respuesta == -1){
@@ -72,8 +90,8 @@ public class ReceptorDatos implements Runnable{
             }
             
             /* Servidor cerró conexión. Cerrar flujos */
-            /*this.FlujoEntrada.close()*/;
-            /*this.FlujoSalida.close()*/;
+            this.FlujoEntrada.close();
+            this.FlujoSalida.close();
             
             /* Mostrar la ventana */
             this.Ventana.mostrarVentana(true);

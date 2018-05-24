@@ -81,10 +81,6 @@ public class Conexion {
             
             /* La segunda respuesta es el alto */
             this.servidorAlto = Integer.valueOf(respuesta);
-
-            /* Cerrar flujos locales */
-            /*this.FlujoEntrada.close()*/;
-            /*this.FlujoSalida.close()*/;
             
             /* Crear un nuevo capturador de comandos que trabaje las peticiones */
             this.EspacioPantalla = new EnviadorComandos(
