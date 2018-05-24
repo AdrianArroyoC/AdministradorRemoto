@@ -103,7 +103,7 @@ public class VentanaCliente extends JFrame {
                 } catch (Exception exc) {
                     JOptionPane.showMessageDialog(null, exc.toString(), "Error al conectarse al server",
                             JOptionPane.ERROR_MESSAGE);
-                   // System.out.println("Error general: " + exc.getMessage());
+                    System.out.println("Error general: " + exc.getMessage());
                 }
 
             }
