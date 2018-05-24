@@ -7,6 +7,7 @@ package principal;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
 
 /**
@@ -95,10 +96,15 @@ public class ReceptorDatos implements Runnable{
             
             /* Mostrar la ventana */
             this.Ventana.mostrarVentana(true);
-        } catch(Exception e) {
+        }catch(IOException ioe){
+            System.out.println("Flujos han sido cerrados");            
+        }catch(Exception e) {
             System.out.println(this.getClass() + ": No fue posible continuar: " + e.getMessage());
             
             e.printStackTrace();
         }
+        
+        /* Matar hilo */
+        this.vivo = false;
     }    
 }

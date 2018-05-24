@@ -103,6 +103,17 @@ public class EnviadorComandos implements Runnable, KeyListener, MouseMotionListe
         return this.listo;
     }
     
+    
+    /*
+        Método para matar el hilo
+    */
+    public void matar(){
+        this.vivo = false;
+        this.listo = false;
+        /*Cerrar panel de captura*/
+        this.Capturista.dispose();
+    }
+    
     /*
         Método privado para convertir las coordenadas del capturador a coordenadas del servidor en la pantalla
     */
@@ -132,8 +143,8 @@ public class EnviadorComandos implements Runnable, KeyListener, MouseMotionListe
         } catch (IOException ioe){
             System.out.println("Error en comunicación: Terminando ejecución");
             
-            /*Cerrar panel de captura*/
-            this.Capturista.dispose();
+            /* Acabar con todo */
+            this.matar();
 
             this.vivo = false;
         } catch (Exception ex) {
@@ -152,8 +163,8 @@ public class EnviadorComandos implements Runnable, KeyListener, MouseMotionListe
         } catch (IOException ioe){
             System.out.println("Error en comunicación: Terminando ejecución");
             
-            /*Cerrar panel de captura*/
-            this.Capturista.dispose();
+            /* Acabar con todo */
+            this.matar();
             
             this.vivo = false;
         } catch (Exception ex) {
@@ -183,15 +194,15 @@ public class EnviadorComandos implements Runnable, KeyListener, MouseMotionListe
         } catch (IOException ioe){
             System.out.println("Error en comunicación: Terminando ejecución");
             
-            /*Cerrar panel de captura*/
-            this.Capturista.dispose();
+            /* Acabar con todo */
+            this.matar();
             
             this.vivo = false;
         } catch (Exception ex) {
             System.out.println("No fue posible enviar el evento de movimiento de mouse: " + ex.getMessage());
         }
     }
-
+    
     @Override
     public void mouseClicked(MouseEvent e) {
     }
@@ -211,8 +222,8 @@ public class EnviadorComandos implements Runnable, KeyListener, MouseMotionListe
         } catch (IOException ioe){
             System.out.println("Error en comunicación: Terminando ejecución");
             
-            /*Cerrar panel de captura*/
-            this.Capturista.dispose();
+            /* Acabar con todo */
+            this.matar();
             
             this.vivo = false;
         } catch (Exception ex) {
@@ -235,8 +246,8 @@ public class EnviadorComandos implements Runnable, KeyListener, MouseMotionListe
         } catch (IOException ioe){
             System.out.println("Error en comunicación: Terminando ejecución");
             
-            /*Cerrar panel de captura*/
-            this.Capturista.dispose();
+            /* Acabar con todo */
+            this.matar();
             
             this.vivo = false;
         } catch (Exception ex) {
@@ -287,8 +298,13 @@ public class EnviadorComandos implements Runnable, KeyListener, MouseMotionListe
             /* Mostrar ventana */
             this.Ventana.mostrarVentana(true);
             
+        } catch(IOException ioe){
+            System.out.println("Flujos han sido cerrados");            
         } catch(Exception e) {
             System.out.println(this.getClass() + ": Hubo un error en ejecución: " + e.getMessage());
         }
+        
+        /* Acabar con todo */
+        this.matar();
     }
 }
