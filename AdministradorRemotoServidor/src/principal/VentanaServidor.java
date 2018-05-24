@@ -224,7 +224,7 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
         else if (e.getSource() == this.BtnIzquierda) {
             this.establecerUbicacion(3);
         }
-        else if (this.ArregloConexiones.length != 0) {           
+        else if (this.ArregloConexiones.length != 0) {
             int conexion = -1;
             for (int i = 0; i < this.ArregloConexiones.length; i++) {
                 this.ArregloConexiones[i].setSelected(false);
