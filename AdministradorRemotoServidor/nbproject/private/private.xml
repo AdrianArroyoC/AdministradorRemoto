@@ -3,7 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/carlos85g/Maestría/Desarrollo%20Multicapas/AdministradorRemoto/AdministradorRemotoServidor/src/principal/VentanaServidor.java</file>
+            <file>file:/D:/Dropbox/Maestria/Cuarto%20semestre/Desarrollo%20multicapas/AdministradorRemoto/AdministradorRemoto/AdministradorRemotoServidor/src/principal/RemovedorClientes.java</file>
+            <file>file:/D:/Dropbox/Maestria/Cuarto%20semestre/Desarrollo%20multicapas/AdministradorRemoto/AdministradorRemoto/AdministradorRemotoServidor/src/principal/EnviadorDatos.java</file>
+            <file>file:/D:/Dropbox/Maestria/Cuarto%20semestre/Desarrollo%20multicapas/AdministradorRemoto/AdministradorRemoto/AdministradorRemotoServidor/src/principal/ReceptorComandos.java</file>
+            <file>file:/D:/Dropbox/Maestria/Cuarto%20semestre/Desarrollo%20multicapas/AdministradorRemoto/AdministradorRemoto/AdministradorRemotoServidor/src/principal/AppServidor.java</file>
+            <file>file:/D:/Dropbox/Maestria/Cuarto%20semestre/Desarrollo%20multicapas/AdministradorRemoto/AdministradorRemoto/AdministradorRemotoServidor/src/principal/Conexion.java</file>
+            <file>file:/D:/Dropbox/Maestria/Cuarto%20semestre/Desarrollo%20multicapas/AdministradorRemoto/AdministradorRemoto/AdministradorRemotoServidor/src/principal/VentanaServidor.java</file>
+            <file>file:/D:/Dropbox/Maestria/Cuarto%20semestre/Desarrollo%20multicapas/AdministradorRemoto/AdministradorRemoto/AdministradorRemotoServidor/src/principal/Comandos.java</file>
+            <file>file:/D:/Dropbox/Maestria/Cuarto%20semestre/Desarrollo%20multicapas/AdministradorRemoto/AdministradorRemoto/AdministradorRemotoServidor/src/principal/ManejadorConexiones.java</file>
+            <file>file:/D:/Dropbox/Maestria/Cuarto%20semestre/Desarrollo%20multicapas/AdministradorRemoto/AdministradorRemoto/AdministradorRemotoServidor/src/principal/AgregadorClientes.java</file>
         </group>
     </open-files>
 </project-private>
