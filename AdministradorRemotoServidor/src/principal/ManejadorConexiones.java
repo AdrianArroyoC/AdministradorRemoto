@@ -69,6 +69,23 @@ public class ManejadorConexiones{
         return Cliente;
     }
     
+    
+    /*
+        Método pararecuperar una conexión basado en el ID dentro del arreglo. Retorna null si no existe
+    */
+    public Conexion getConexion(int indice){
+        Conexion
+            Cliente = null;
+
+        try {
+            Cliente = this.Conexiones.get(indice);
+        } catch (Exception e) {
+            System.out.println("Cliente no existe. Retornando null");
+        }
+
+        return Cliente;
+    }
+    
     /*
         Método para recuperar un arreglo de todas las conexiones
     */
@@ -175,5 +192,8 @@ public class ManejadorConexiones{
                  ((indice == i)? false : true)
             );
         }
+        
+        /* Llamar a la ventana para actualizar interfaz */
+        this.Ventana.agregarQuitarBotones();
     }
 }

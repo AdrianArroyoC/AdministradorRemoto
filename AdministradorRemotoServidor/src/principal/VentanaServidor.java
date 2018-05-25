@@ -23,6 +23,7 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
     private Dimension Pantalla = Toolkit.getDefaultToolkit().getScreenSize();
     private int LargoPantalla = (int) Pantalla.getHeight();
     private int AnchoPantalla = (int) Pantalla.getWidth();
+    private String usuarioActivoIP = "";
     private final ImageIcon ImgCerrar = new ImageIcon(getClass().getResource("..\\imagenes\\cerrar.png"));
     private final ImageIcon ImgOcultar = new ImageIcon(getClass().getResource("..\\imagenes\\ocultar.png"));
     private final ImageIcon ImgArriba = new ImageIcon(getClass().getResource("..\\imagenes\\arriba.png"));
@@ -141,7 +142,7 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
     
     public void agregarQuitarBotones() {
         try {
-            Conexion[] conexiones = CarteraClientes.getConexiones();            
+            Conexion[] conexiones = CarteraClientes.getConexiones();
             PnlConexiones.removeAll();
             //Conexion[] conexiones = new Conexion[22];
             if (conexiones.length != 0) {
@@ -200,8 +201,15 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
                         this.ArregloConexiones[i].setBounds(x, y, 90, 30);
                         y += 33;
                     }
+                    /* Actualizar estado si el usuario actual está activo */
+                    if(this.usuarioActivoIP.equals(conexiones[i].getDireccionIP())){
+                        this.ArregloConexiones[i].setSelected(true);
+                    }
                     this.PnlConexiones.add(this.ArregloConexiones[i]);
                 }
+            }else{
+                /* No hay conexiones, desactivar */
+                this.usuarioActivoIP = "";
             }
             /* Debe hacerse independientemente de si hay o no conexiones */
             this.revalidate();
@@ -233,18 +241,36 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
         }
         else if (e.getSource() == this.BtnCerrarConexion) {
             //AQUI VA LO DE CARLOS
+
+            /* Actualizar variable global*/
+            this.usuarioActivoIP = "";
+            
+            /* Bloquear todas*/
+            this.CarteraClientes.desbloquear(-1);
         }
-        else if (this.ArregloConexiones.length != 0) {
-            int conexion = -1;
-            for (int i = 0; i < this.ArregloConexiones.length; i++) {
-                this.ArregloConexiones[i].setSelected(false);
-                if (e.getSource() == this.ArregloConexiones[i]) {
-                    this.ArregloConexiones[i].setSelected(true);
-                    conexion = i;
+        else{
+             if (this.ArregloConexiones.length != 0) {
+                int conexion = -1;
+                for (int i = 0; i < this.ArregloConexiones.length; i++) {
+                    this.ArregloConexiones[i].setSelected(false);
+                    if (e.getSource() == this.ArregloConexiones[i]) {
+                        this.ArregloConexiones[i].setSelected(true);
+                        conexion = i;
+                    }
                 }
+                //Metodo para realizar la conexion
+
+                /* Obtener la IP de la conexión activa */
+                Conexion Cliente = this.CarteraClientes.getConexion(conexion);
+
+                /* Actualizar si cliente existe */
+                this.usuarioActivoIP = (Cliente != null)? Cliente.getDireccionIP() : "";
+
+                /* Descloquear la conexión deseada (o ninguna) */
+                this.CarteraClientes.desbloquear(conexion);
+            }else{
+                this.usuarioActivoIP = "";
             }
-            //Metodo para realizar la conexion
-            this.CarteraClientes.desbloquear(conexion);
         }
     }
 
@@ -289,6 +315,7 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
                 if (this.ArregloConexiones[i].isSelected()) {
                     String cadena = CarteraClientes.getConexiones()[i].getDireccionIP();
                     CarteraClientes.getConexion(cadena).matar();
+                    this.usuarioActivoIP = "";
                 }
             }
         }
