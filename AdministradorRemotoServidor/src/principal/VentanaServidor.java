@@ -24,12 +24,12 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
     private int LargoPantalla = (int) Pantalla.getHeight();
     private int AnchoPantalla = (int) Pantalla.getWidth();
     private String usuarioActivoIP = "";
-    private final ImageIcon ImgCerrar = new ImageIcon(getClass().getResource("..\\imagenes\\cerrar.png"));
-    private final ImageIcon ImgOcultar = new ImageIcon(getClass().getResource("..\\imagenes\\ocultar.png"));
-    private final ImageIcon ImgArriba = new ImageIcon(getClass().getResource("..\\imagenes\\arriba.png"));
-    private final ImageIcon ImgDerecha = new ImageIcon(getClass().getResource("..\\imagenes\\derecha.png"));
-    private final ImageIcon ImgAbajo = new ImageIcon(getClass().getResource("..\\imagenes\\abajo.png"));
-    private final ImageIcon ImgIzquierda = new ImageIcon(getClass().getResource("..\\imagenes\\izquierda.png"));
+    private final ImageIcon ImgCerrar = new ImageIcon(getClass().getResource("/imagenes/cerrar.png"));
+    private final ImageIcon ImgOcultar = new ImageIcon(getClass().getResource("/imagenes/ocultar.png"));
+    private final ImageIcon ImgArriba = new ImageIcon(getClass().getResource("/imagenes/arriba.png"));
+    private final ImageIcon ImgDerecha = new ImageIcon(getClass().getResource("/imagenes/derecha.png"));
+    private final ImageIcon ImgAbajo = new ImageIcon(getClass().getResource("/imagenes/abajo.png"));
+    private final ImageIcon ImgIzquierda = new ImageIcon(getClass().getResource("/imagenes/izquierda.png"));
     private JButton BtnCerrar = new JButton(ImgCerrar);
     private JButton BtnOcultar = new JButton(ImgOcultar);
     private boolean Horizontal = false;
@@ -51,7 +51,6 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
         this.setDefaultCloseOperation(EXIT_ON_CLOSE); 
         this.setLocationRelativeTo(null);
         this.setLayout(null);
-        this.setAlwaysOnTop(true);
         this.setUndecorated(true);
         this.establecerUbicacion(0);
         this.PnlConexiones.setLayout(null);
@@ -82,9 +81,9 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
         this.BtnIzquierda.setBounds(0, 33, 33, 33);
         this.BtnCerrarConexion.setBounds(33, 33, 33, 33);
         this.addKeyListener(this);
-        this.setVisible(true);
         this.setAlwaysOnTop(true);
         this.CarteraClientes = new ManejadorConexiones(this);
+        this.setVisible(true);
     }
     
     public void establecerUbicacion(int posicion) {
