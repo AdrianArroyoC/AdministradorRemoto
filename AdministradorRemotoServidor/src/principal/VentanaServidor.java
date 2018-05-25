@@ -37,6 +37,7 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
     private JButton BtnDerecha = new JButton(ImgDerecha);
     private JButton BtnAbajo = new JButton(ImgAbajo);
     private JButton BtnIzquierda = new JButton(ImgIzquierda);
+    private JButton BtnCerrarConexion = new JButton("x");
     private JPanel PnlConexiones = new JPanel();
     private ButtonGroup AgrupacionConexiones = new ButtonGroup();
     private JToggleButton[] ArregloConexiones;
@@ -66,16 +67,19 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
         this.PnlFlechas.add(this.BtnDerecha);
         this.PnlFlechas.add(this.BtnAbajo);
         this.PnlFlechas.add(this.BtnIzquierda);
+        this.PnlFlechas.add(this.BtnCerrarConexion);
         this.BtnCerrar.addMouseListener(this);
         this.BtnOcultar.addMouseListener(this);
         this.BtnArriba.addMouseListener(this);
         this.BtnDerecha.addMouseListener(this);
         this.BtnAbajo.addMouseListener(this);
         this.BtnIzquierda.addMouseListener(this);
+        this.BtnCerrarConexion.addMouseListener(this);
         this.BtnArriba.setBounds(33, 0, 33, 33);   
         this.BtnDerecha.setBounds(66, 33, 33, 33);
         this.BtnAbajo.setBounds(33, 66, 33, 33);
         this.BtnIzquierda.setBounds(0, 33, 33, 33);
+        this.BtnCerrarConexion.setBounds(33, 33, 33, 33);
         this.addKeyListener(this);
         this.setVisible(true);
         this.setAlwaysOnTop(true);
@@ -112,11 +116,11 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
     private void cambiarOrientacion() {
         
         if (this.Horizontal) {
-            this.setSize(800, 211);
+            this.setSize(800, 100);
             this.BtnCerrar.setBounds(21, 11, 33, 33);
             this.BtnOcultar.setBounds(21, 56, 33, 33);
             this.PnlFlechas.setBounds(65, 0, 100, 100);
-            this.PnlConexiones.setBounds(176, 0, 600, 211);
+            this.PnlConexiones.setBounds(176, 0, 600, 100);
         }
         else {
             this.setSize(100, 800);
@@ -132,6 +136,7 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
         this.BtnCerrar.setVisible(mostrar);
         this.BtnOcultar.setVisible(mostrar);
         this.PnlFlechas.setVisible(mostrar);
+        this.PnlConexiones.setVisible(mostrar);
     }
     
     public void agregarQuitarBotones() {
@@ -170,6 +175,8 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
                     else if (i == 18 && this.Horizontal) {
                             y = 106;
                             x = 5;
+                            this.setSize(800, 211);
+                            this.PnlConexiones.setBounds(176, 0, 600, 211);
                     }
                     else if (i == 24 && this.Horizontal) {
                             y = 141;
@@ -223,6 +230,9 @@ public class VentanaServidor extends JFrame implements MouseListener, KeyListene
         }
         else if (e.getSource() == this.BtnIzquierda) {
             this.establecerUbicacion(3);
+        }
+        else if (e.getSource() == this.BtnCerrarConexion) {
+            //AQUI VA LO DE CARLOS
         }
         else if (this.ArregloConexiones.length != 0) {
             int conexion = -1;
